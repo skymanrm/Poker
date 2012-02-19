@@ -8,13 +8,13 @@ import card.HandPlayer.HandStatus;
 
 public class BettingRound extends Round<BetAction> {
 	
-	protected final List<Integer> raises;
+	protected int standingRaise;
 	protected int totalToCall;
 	
 	public BettingRound(int startingPosition, List<HandPlayer> handPlayers) {
 		super(startingPosition, handPlayers);
-		raises = new ArrayList<Integer>();
 		totalToCall = 0;
+		standingRaise = 0;
 	}
 
 	/*
@@ -47,16 +47,23 @@ public class BettingRound extends Round<BetAction> {
 	private void evaluateMatch(HandPlayer player){
 		int amount = totalToCall - player.getAmountCommitedToRound();
 		if(amount>=player.getTableBankroll()){
-			int allInAmount = player.getTableBankroll() - player.getAmountCommitedToRound();
+			amount = player.getTableBankroll() - player.getAmountCommitedToRound();
 			player.setHandStatus(HandStatus.ALL_IN);
-			player.addToPot(allInAmount);
 		}
 		player.addToPot(amount);
 	}
 	
 	private void evaluateRaise(int amount, HandPlayer player){
-		if(totalToCall != 0){
-			
+		evaluateMatch(player);
+		if(amount==player.getTableBankroll()){
+			player.setHandStatus(HandStatus.ALL_IN);
+		}
+		if(amount >= standingRaise * 2){
+			standingRaise = amount;
+			resetActedForPlayers(player, true);
+		}
+		else{
+			resetActedForPlayers(player, false);
 		}
 		player.addToPot(amount);
 	}
@@ -70,10 +77,11 @@ public class BettingRound extends Round<BetAction> {
 		return true;
 	}
 	
-	private void resetActedForPlayers(HandPlayer raisePlayer) {
+	private void resetActedForPlayers(HandPlayer raisePlayer, boolean canRaise) {
 		for(HandPlayer player : getHandPlayers()){
 			if(player!=raisePlayer && player.getHandStatus()==HandStatus.PLAYING){
 				player.setActed(false);
+				player.setCanRaise(canRaise);
 			}
 		}
 	}
@@ -84,9 +92,5 @@ public class BettingRound extends Round<BetAction> {
 
 	public void setTotalToCall(int totalToCall) {
 		this.totalToCall = totalToCall;
-	}
-
-	public List<Integer> getRaises() {
-		return raises;
 	}
 }

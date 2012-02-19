@@ -13,6 +13,7 @@ public class HandPlayer implements Comparable<HandPlayer>{
 	private HandStatus handStatus;
 	private boolean acted;
 	private int amountCommittedToRound;
+	private boolean canRaise;
 	
 	public enum HandStatus {
 	    FOLDED, ALL_IN, PLAYING, SAT_OUT
@@ -25,6 +26,7 @@ public class HandPlayer implements Comparable<HandPlayer>{
 		this.relativeSeat = determineRelativeSeat();
 		this.setHandStatus(handStatus);
 		this.acted = false;
+		this.setCanRaise(false);
 		this.amountCommittedToRound = 0;
 	}
 	
@@ -104,5 +106,13 @@ public class HandPlayer implements Comparable<HandPlayer>{
 
 	public int getAmountCommitedToRound() {
 		return amountCommittedToRound;
+	}
+
+	public boolean canRaise() {
+		return canRaise;
+	}
+
+	public void setCanRaise(boolean canRaise) {
+		this.canRaise = canRaise;
 	}
 }
