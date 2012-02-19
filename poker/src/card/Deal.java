@@ -1,5 +1,7 @@
 package card;
 
+import player.Player;
+
 /*
  * What happens at an 8 seat 7 Card Stud table if everyone stays in until Seventh Street? 
  * Officially in this case Seventh Street is dealt as a community card. 

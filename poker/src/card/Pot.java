@@ -3,6 +3,9 @@ package card;
 import java.util.ArrayList;
 import java.util.List;
 
+import player.HandPlayer;
+
+
 public class Pot {
 
 	private final List<Pot> sidePots;

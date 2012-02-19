@@ -1,7 +1,11 @@
-package card;
+package player;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import card.Card;
+import card.Hand;
+
 
 public class HandPlayer implements Comparable<HandPlayer>{
 	

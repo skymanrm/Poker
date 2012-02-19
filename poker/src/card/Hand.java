@@ -5,7 +5,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 
-import card.HandPlayer.HandStatus;
+import player.HandPlayer;
+import player.TablePlayer;
+import player.HandPlayer.HandStatus;
+import round.DealingRound;
+import round.HoldemManager;
+import round.Round;
+import round.RoundManager;
+
+
 
 public class Hand {
 
@@ -19,6 +27,8 @@ public class Hand {
 	private boolean endConditionMet;
 	private int roundIndex;
 	private int potValue;
+	private HandPlayer lastRaiser;
+	private RoundManager roundManager;
 	
 	public Hand(GameType gameType, Table table, List<TablePlayer> tablePlayers){
 		this.table = table;
@@ -34,6 +44,25 @@ public class Hand {
 		this.roundIndex = 0;
 		this.buttonSeat = table.getButtonSeat();
 		this.potValue = 0;
+		this.setLastRaiser(null);
+		
+		initRoundManager();
+		runRounds();
+	}
+	private void initRoundManager(){
+		if(this.gameType == GameType.HOLDEM){
+			roundManager = new HoldemManager();
+		}
+	}
+	private void runRounds() {
+		while(!endConditionMet){
+			Round<?> round = roundManager.getRoundForIndex(this, roundIndex);
+			DealingRound dealingRound = (DealingRound) round;
+			while(!dealingRound.isComplete()){
+				dealingRound.evaluateAction(dealingRound.getAction());
+				dealingRound.setActivePlayer(dealingRound.getNextPlayer());
+			}
+		}
 	}
 
 	public int getPotValue(){
@@ -104,5 +133,13 @@ public class Hand {
 
 	public Table getTable() {
 		return table;
+	}
+
+	public HandPlayer getLastRaiser() {
+		return lastRaiser;
+	}
+
+	public void setLastRaiser(HandPlayer lastRaiser) {
+		this.lastRaiser = lastRaiser;
 	}
 }

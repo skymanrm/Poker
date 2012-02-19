@@ -1,4 +1,7 @@
-package card;
+package player;
+
+import card.Table;
+import card.TableStatus;
 
 public class TablePlayer implements Comparable<TablePlayer>{
 	
