@@ -6,14 +6,15 @@ import player.HandPlayer;
 
 
 import card.Hand;
+import card.Pot;
 import card.Visibility;
 
 public class DealingRound extends BettingRound {
 
 	private final List<Visibility> visibilities;
 	
-	public DealingRound(int startingPosition,List<HandPlayer> handPlayers, List<Visibility> visibilities) {
-		super(startingPosition, handPlayers);
+	public DealingRound(int startingPosition,List<HandPlayer> handPlayers,Pot pot, List<Visibility> visibilities) {
+		super(startingPosition, handPlayers,pot);
 		this.visibilities = visibilities;
 		this.roundTitle = "Dealing Round";
 		Hand hand = handPlayers.get(0).getHand();

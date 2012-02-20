@@ -19,7 +19,7 @@ public class Hand {
 
 	private final Table table;
 	private final List<HandPlayer> playersInHand;
-	//private final List<Round> rounds;
+	private final List<Round<?>> rounds;
 	private final Stack<Card> cards;
 	private final List<Card> communityCards;
 	private final GameType gameType;
@@ -29,6 +29,7 @@ public class Hand {
 	private int potValue;
 	private HandPlayer lastRaiser;
 	private RoundManager roundManager;
+	private final Pot pot;
 	
 	public Hand(GameType gameType, Table table, List<TablePlayer> tablePlayers){
 		this.table = table;
@@ -38,13 +39,14 @@ public class Hand {
 		Collections.sort(playersInHand);
 		cards = Card.newDeck();
 		communityCards = new ArrayList<Card>();
-		//rounds = new ArrayList<Round>();
+		rounds = new ArrayList<Round<?>>();
 		this.gameType = gameType;
 		this.setEndConditionMet(false);
 		this.roundIndex = 0;
 		this.buttonSeat = table.getButtonSeat();
 		this.potValue = 0;
 		this.setLastRaiser(null);
+		this.pot = new Pot();
 		
 		initRoundManager();
 		runRounds();
@@ -67,11 +69,37 @@ public class Hand {
 				dealingRound.setNextPlayer();
 				System.out.println(dealingRound.toString());
 			}
-			
+			rounds.add(dealingRound);
 			roundIndex++;
 		}
+		endHand();
 	}
 
+	private void endHand() {
+		for(Pot p: formPots()){
+			List<HandPlayer> winners = findWinningPlayers(p.getEligiblePlayers());
+			//TODO don't just disregard remainders
+			int divisor = winners.size();
+			for(HandPlayer player: winners){
+				player.getTablePlayer().increaseTableBankroll(p.getTotalValue()/divisor);
+			}
+		}
+	}
+	
+	private List<HandPlayer> findWinningPlayers(List<HandPlayer> eligiblePlayers) {
+		List<HandPlayer> winners = new ArrayList<HandPlayer>();
+		if(eligiblePlayers.size()==1){
+			winners.add(eligiblePlayers.get(0));
+		}
+		//TODO establish winning conditions for contested pots
+		return winners;
+	}
+	private List<Pot> formPots(){
+		List<Pot> pots = new ArrayList<Pot>();
+		pots.add(pot);
+		pots.addAll(pot.getSidePots());
+		return pots;
+	}
 	public int getPotValue(){
 		return potValue;
 	}
@@ -94,9 +122,9 @@ public class Hand {
 		return gameType;
 	}
 
-//	public List<Round> getRounds() {
-//		return rounds;
-//	}
+	public List<Round<?>> getRounds() {
+		return rounds;
+	}
 
 	public Stack<Card> getCards() {
 		return cards;
@@ -160,5 +188,8 @@ public class Hand {
 		Card card = cards.pop();
 		card.setVisibility(Visibility.COMMUNITY);
 		communityCards.add(card);
+	}
+	public Pot getPot() {
+		return pot;
 	}
 }

@@ -111,15 +111,14 @@ public class HandPlayer implements Comparable<HandPlayer>{
 		amountCommittedToRound+=amount;
 	}
 
-	public int getAmountCommitedToRound() {
-		return amountCommittedToRound;
-	}
-
 	public boolean canRaise() {
 		return canRaise;
 	}
 
 	public void setCanRaise(boolean canRaise) {
 		this.canRaise = canRaise;
+	}
+	public int getAmountCommittedToRound() {
+		return amountCommittedToRound;
 	}
 }
