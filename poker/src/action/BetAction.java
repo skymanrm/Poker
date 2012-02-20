@@ -22,4 +22,10 @@ public class BetAction extends Action {
 		return betActionType;
 	}
 
+	public String toString(){
+		String s = "BetAction: ";
+		s+="\tAmount: "+amount;
+		s+="\tType: "+betActionType.toString();
+		return s;
+	}
 }

@@ -17,12 +17,17 @@ public class BettingRound extends Round<BetAction> {
 		super(startingPosition, handPlayers);
 		totalToCall = 0;
 		standingRaise = 0;
+		this.roundTitle = "Betting Round";
+		this.resetActedForPlayers(null, true);
 	}
 
 	@Override
 	public void evaluateAction(BetAction action) {
 		HandPlayer player = action.getHandPlayer();
 		BetActionType actionType = action.getBetActionType();
+		//Testing
+		System.out.println("Evaluation Action Method");
+		System.out.println(player.getTablePlayer().getPlayer().getName()+" "+action.toString());
 		
 		if(actionType == BetActionType.FOLD){
 			this.evaluateFold(player);
@@ -36,10 +41,17 @@ public class BettingRound extends Round<BetAction> {
 		
 		player.setActed(true);
 		checkIfComplete();
-		
 	}
 
 	public BetAction getAction(){
+		BetActionType betType = this.getActionTypeFromInput();
+		java.util.Date date= new java.util.Date();
+		//TODO should ask amount
+		BetAction bet = new BetAction(date.getTime(), this, activePlayer, betType, 2);
+		return bet;
+	}
+	
+	private BetActionType getActionTypeFromInput(){
 		Scanner scanner = new Scanner(System.in);
 		System.out.println(activePlayer.getTablePlayer().getPlayer().getName()+"(m/r/f)");
 		String response = scanner.nextLine().trim();
@@ -54,25 +66,9 @@ public class BettingRound extends Round<BetAction> {
 			betType = BetActionType.FOLD;
 		}
 		else{
-			getAction();
+			getActionTypeFromInput();
 		}
-		java.util.Date date= new java.util.Date();
-		BetAction bet = new BetAction(date.getTime(), this, activePlayer, betType, standingRaise);
-		return bet;
-	}
-	
-	public HandPlayer getNextPlayer(){
-		int count = 0;
-		int currentIndex = currentPosition;
-		while(count<10){
-			currentPosition++;
-			currentPosition%=handPlayers.size();
-			HandPlayer player = handPlayers.get(currentIndex);
-			if(player.getHandStatus()==HandStatus.PLAYING){
-				return player;
-			}
-		}
-		return null;
+		return betType;
 	}
 	
 	private void checkIfComplete() {
@@ -104,6 +100,11 @@ public class BettingRound extends Round<BetAction> {
 		player.addToPot(amount);
 	}
 	
+	/**
+	 * Raises the pot by the amount in addition to whatever raises exist (read raise "on top")
+	 * @param amount: amount to increase required contribution from other players (read raise amount)
+	 * @param player: raising player
+	 */
 	private void evaluateRaise(int amount, HandPlayer player){
 		if(amount<this.getMinimumRaiseAmount(player)){
 			throw new IllegalArgumentException("Too small of a raise");
@@ -120,8 +121,10 @@ public class BettingRound extends Round<BetAction> {
 			resetActedForPlayers(player, false);
 		}
 		player.addToPot(amount);
+		totalToCall+=amount;
 	}
 
+	
 	private boolean allPlayersHaveActed(){
 		for(HandPlayer player : getHandPlayers()){
 			if(!player.hasActed()){
@@ -154,9 +157,17 @@ public class BettingRound extends Round<BetAction> {
 	
 	public int getMinimumRaiseAmount(HandPlayer player){
 		if(standingRaise!=0){
-			return standingRaise*2;
+			return standingRaise;
 		}
 		//TODO not chill for Limit Games needs revising
 		return player.getTablePlayer().getTable().getBigLimit();
+	}
+
+	@Override
+	public String toString() {
+		String s = super.toString();
+		s+="\nStanding Raise: "+standingRaise;
+		s+="\tTotal to Call: "+totalToCall;
+		return s;
 	}
 }

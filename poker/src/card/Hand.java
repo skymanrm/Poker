@@ -58,10 +58,17 @@ public class Hand {
 		while(!endConditionMet){
 			Round<?> round = roundManager.getRoundForIndex(this, roundIndex);
 			DealingRound dealingRound = (DealingRound) round;
+			System.out.println("\nRound Index: "+roundIndex+"\n");
 			while(!dealingRound.isComplete()){
+				HandPlayer player = dealingRound.getActivePlayer();
+				System.out.println("\n"+player.getTablePlayer().getPlayer().getName()+"'s TableBankroll Before Action: "+player.getTableBankroll()+"\n");
 				dealingRound.evaluateAction(dealingRound.getAction());
-				dealingRound.setActivePlayer(dealingRound.getNextPlayer());
+				System.out.println("\n"+player.getTablePlayer().getPlayer().getName()+"'s TableBankroll Before Action: "+player.getTableBankroll()+"\n");
+				dealingRound.setNextPlayer();
+				System.out.println(dealingRound.toString());
 			}
+			
+			roundIndex++;
 		}
 	}
 
@@ -118,7 +125,7 @@ public class Hand {
 		}
 		s+="\n";
 		for(HandPlayer player: getPlayersInHand()){
-			s+=player.toString();
+			s+=player.toString()+"\n";
 		}
 		return s;
 	}
@@ -141,5 +148,17 @@ public class Hand {
 
 	public void setLastRaiser(HandPlayer lastRaiser) {
 		this.lastRaiser = lastRaiser;
+	}
+	
+	public void addCardToPlayer(Visibility visibility, HandPlayer player){
+		Card card = cards.pop();
+		card.setVisibility(visibility);
+		player.addCardToHand(card);
+	}
+	
+	public void addCommunityCard(){
+		Card card = cards.pop();
+		card.setVisibility(Visibility.COMMUNITY);
+		communityCards.add(card);
 	}
 }

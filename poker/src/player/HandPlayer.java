@@ -81,9 +81,12 @@ public class HandPlayer implements Comparable<HandPlayer>{
 	
 	public String toString(){
 		String s = tablePlayer.getPlayer().getName();
-		s+="\n"+handStatus.toString();
-		s+="\nRelative Seat: "+relativeSeat;
-		s+="\nHole Cards:\n";
+		s+="\t\t"+handStatus.toString();
+		s+="\t\tRelative Seat: "+relativeSeat;
+		s+="\t\tHas Acted: "+acted;
+		s+="\t\tCan Raise: "+canRaise;
+		s+="\t\tAmount Commited to Round: "+amountCommittedToRound;
+		s+="\t\tHole Cards: ";
 		for(Card card : cards){
 			s+=card.toString()+", ";
 		}
