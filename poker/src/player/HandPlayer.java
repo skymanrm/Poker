@@ -121,4 +121,11 @@ public class HandPlayer implements Comparable<HandPlayer>{
 	public int getAmountCommittedToRound() {
 		return amountCommittedToRound;
 	}
+	public void resetForNewRound(){
+		amountCommittedToRound = 0;
+		if(handStatus == HandStatus.PLAYING){
+			acted = false;
+			canRaise = true;
+		}
+	}
 }

@@ -20,6 +20,8 @@ public class BettingRound extends Round<BetAction> {
 	protected final List<HandPlayer> allInPlayers;
 	protected final Pot pot;
 	
+	//TODO manually keep track of # players instead of counting every time
+	
 	public BettingRound(int startingPosition, List<HandPlayer> handPlayers, Pot pot) {
 		super(startingPosition, handPlayers);
 		totalToCall = 0;
@@ -82,15 +84,13 @@ public class BettingRound extends Round<BetAction> {
 	
 	private void checkIfComplete() {
 		this.setComplete(this.allPlayersHaveActed());
-		if(!complete){
-			int counter = findHowManyPlayersPlaying();
-			if(counter==1){
-				setComplete(true);
-				getHand().setEndConditionMet(true);
-				finishRound();
-			}
+		int counter = findHowManyPlayersPlaying();
+		if(counter==1){
+			setComplete(true);
+			getHand().setEndConditionMet(true);
+			finishRound();
 		}
-		else{
+		else if(complete){
 			finishRound();
 		}
 	}
@@ -175,9 +175,11 @@ public class BettingRound extends Round<BetAction> {
 	}
 	
 	private void finishRound(){
-		this.resetActedForPlayers(null, true);
 		for(HandPlayer player: allInPlayers){
 			pot.addSidePot(player, handPlayers);
+		}
+		for(HandPlayer player: handPlayers){
+			player.resetForNewRound();
 		}
 		pot.addToTotalValue(totalRoundValue);
 	}
@@ -200,7 +202,11 @@ public class BettingRound extends Round<BetAction> {
 	}
 	
 	public int getAmountToCall(HandPlayer player){
-		return totalToCall - player.getAmountCommittedToRound();
+		int amount = totalToCall - player.getAmountCommittedToRound();
+		if(amount<0){
+			throw new IllegalArgumentException("Amount to call is getting set incorrectly");
+		}
+		return amount;
 	}
 	
 	public int getMinimumRaiseAmount(HandPlayer player){

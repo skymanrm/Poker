@@ -62,10 +62,11 @@ public class Hand {
 			DealingRound dealingRound = (DealingRound) round;
 			System.out.println("\nRound Index: "+roundIndex+"\n");
 			while(!dealingRound.isComplete()){
+				System.out.println(dealingRound.toString());
 				HandPlayer player = dealingRound.getActivePlayer();
 				System.out.println("\n"+player.getTablePlayer().getPlayer().getName()+"'s TableBankroll Before Action: "+player.getTableBankroll()+"\n");
 				dealingRound.evaluateAction(dealingRound.getAction());
-				System.out.println("\n"+player.getTablePlayer().getPlayer().getName()+"'s TableBankroll Before Action: "+player.getTableBankroll()+"\n");
+				System.out.println("\n"+player.getTablePlayer().getPlayer().getName()+"'s TableBankroll After Action: "+player.getTableBankroll()+"\n");
 				dealingRound.setNextPlayer();
 				System.out.println(dealingRound.toString());
 			}

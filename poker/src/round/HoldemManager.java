@@ -37,7 +37,7 @@ public class HoldemManager implements RoundManager {
 		else{
 			startingPosition = 0;
 		}
-		return new DealingRound(startingPosition,players,visibilities);
+		return new DealingRound(startingPosition,players,hand.getPot(),visibilities);
 	}
 	
 	public DealingRound getFlopRound(){
@@ -47,7 +47,7 @@ public class HoldemManager implements RoundManager {
 		visibilities.add(Visibility.COMMUNITY);
 		List<HandPlayer> players = hand.getPlayersInHand();
 		int startingPosition = 1;
-		return new DealingRound(startingPosition,players,visibilities);
+		return new DealingRound(startingPosition,players,hand.getPot(),visibilities);
 	}
 	
 	public DealingRound getTurnOrRiverRound(){
@@ -55,6 +55,6 @@ public class HoldemManager implements RoundManager {
 		visibilities.add(Visibility.COMMUNITY);
 		List<HandPlayer> players = hand.getPlayersInHand();
 		int startingPosition = 1;
-		return new DealingRound(startingPosition,players,visibilities);
+		return new DealingRound(startingPosition,players,hand.getPot(),visibilities);
 	}
 }
