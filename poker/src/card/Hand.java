@@ -64,9 +64,9 @@ public class Hand {
 			while(!dealingRound.isComplete()){
 				System.out.println(dealingRound.toString());
 				HandPlayer player = dealingRound.getActivePlayer();
-				System.out.println("\n"+player.getTablePlayer().getPlayer().getName()+"'s TableBankroll Before Action: "+player.getTableBankroll()+"\n");
+				System.out.println("\n"+player.getName()+"'s TableBankroll Before Action: "+player.getTableBankroll()+"\n");
 				dealingRound.evaluateAction(dealingRound.getAction());
-				System.out.println("\n"+player.getTablePlayer().getPlayer().getName()+"'s TableBankroll After Action: "+player.getTableBankroll()+"\n");
+				System.out.println("\n"+player.getName()+"'s TableBankroll After Action: "+player.getTableBankroll()+"\n");
 				dealingRound.setNextPlayer();
 				System.out.println(dealingRound.toString());
 			}
@@ -82,7 +82,7 @@ public class Hand {
 			//TODO don't just disregard remainders
 			int divisor = winners.size();
 			for(HandPlayer player: winners){
-				player.getTablePlayer().increaseTableBankroll(p.getTotalValue()/divisor);
+				player.increaseTableBankroll(p.getTotalValue()/divisor);
 			}
 		}
 	}

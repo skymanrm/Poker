@@ -18,6 +18,12 @@ public class Player {
 		this.setAutoMuck(false);
 	}
 
+	public Player(Player player){
+		this.name = player.name;
+		this.bankroll = player.bankroll;
+		this.autoMuck = player.autoMuck;
+	}
+	
 	public String getName() {
 		return name;
 	}

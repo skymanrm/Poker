@@ -7,10 +7,9 @@ import card.Card;
 import card.Hand;
 
 
-public class HandPlayer implements Comparable<HandPlayer>{
+public class HandPlayer extends TablePlayer implements Comparable<HandPlayer>{
 	
 	private final Hand hand;
-	private final TablePlayer tablePlayer;
 
 	private final List<Card> cards;
 	private final int relativeSeat;
@@ -24,7 +23,7 @@ public class HandPlayer implements Comparable<HandPlayer>{
 	}
 	
 	public HandPlayer(TablePlayer tablePlayer, Hand hand, HandStatus handStatus) {
-		this.tablePlayer = tablePlayer;
+		super(tablePlayer);
 		this.hand = hand;
 		this.cards = new ArrayList<Card>();
 		this.relativeSeat = determineRelativeSeat();
@@ -35,15 +34,10 @@ public class HandPlayer implements Comparable<HandPlayer>{
 	}
 	
 	private int determineRelativeSeat(){
-		int buttonSeat = tablePlayer.getTable().getButtonSeat();
-		int maxSeats = tablePlayer.getTable().getMaxSeats();
-		int absoluteSeat = tablePlayer.getAbsoluteSeat();
+		int buttonSeat = getTable().getButtonSeat();
+		int maxSeats = getTable().getMaxSeats();
+		int absoluteSeat = getAbsoluteSeat();
 		return ((maxSeats - buttonSeat) + absoluteSeat) % maxSeats;
-	}
-	
-	
-	public TablePlayer getTablePlayer() {
-		return tablePlayer;
 	}
 	
 	public Hand getHand() {
@@ -80,7 +74,7 @@ public class HandPlayer implements Comparable<HandPlayer>{
 	}
 	
 	public String toString(){
-		String s = tablePlayer.getPlayer().getName();
+		String s = super.toString();
 		s+="\t\t"+handStatus.toString();
 		s+="\t\tRelative Seat: "+relativeSeat;
 		s+="\t\tHas Acted: "+acted;
@@ -101,12 +95,8 @@ public class HandPlayer implements Comparable<HandPlayer>{
 		this.acted = acted;
 	}
 	
-	public int getTableBankroll(){
-		return getTablePlayer().getTableBankroll();
-	}
-	
 	public void addToPot(int amount){
-		getTablePlayer().decreaseTableBankroll(amount);
+		decreaseTableBankroll(amount);
 		hand.increasePotValue(amount);
 		amountCommittedToRound+=amount;
 	}

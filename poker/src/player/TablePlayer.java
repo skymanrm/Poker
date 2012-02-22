@@ -3,17 +3,24 @@ package player;
 import card.Table;
 import card.TableStatus;
 
-public class TablePlayer implements Comparable<TablePlayer>{
+public class TablePlayer extends Player{
 	
-	private final Player player;
 	private final Table table;
 	
 	private int tableBuyin;
 	private int absoluteSeat;
 	private TableStatus tableStatus;
 	
+	public TablePlayer(TablePlayer player){
+		super(player.getName(),player.getBankroll());
+		this.table = player.getTable();
+		this.absoluteSeat = player.getAbsoluteSeat();
+		this.tableStatus = player.getTableStatus();
+		this.tableBuyin = player.getTableBankroll();
+	}
+	
 	public TablePlayer(Player player,Table table, int tableBankroll, int absoluteSeat, TableStatus tableStatus){
-		this.player = player;
+		super(player);
 		this.table = table;
 		this.setAbsoluteSeat(absoluteSeat);
 		this.setTableStatus(tableStatus);
@@ -37,11 +44,11 @@ public class TablePlayer implements Comparable<TablePlayer>{
 	
 	//TODO need to change for rebuys
 	public void setTableBankroll(int tableBankroll) {
-		if(tableBankroll > player.getBankroll() || tableBankroll < 0){
+		if(tableBankroll > getBankroll() || tableBankroll < 0){
 			throw new IllegalArgumentException("Table Buyin Amount is Invalid");
 		}
-		this.player.decreaseBankroll(tableBankroll);
-		this.tableBuyin = tableBankroll;
+		decreaseBankroll(tableBankroll);
+		tableBuyin = tableBankroll;
 	}
 
 	public int getAbsoluteSeat() {
@@ -65,12 +72,8 @@ public class TablePlayer implements Comparable<TablePlayer>{
 		this.tableStatus = tableStatus;
 	}
 
-	public Player getPlayer() {
-		return player;
-	}
-
 	public String toString(){
-		String playerString = this.player.toString();
+		String playerString = super.toString();
 		String tablePlayerString = "Absolute Seat: "
 		+this.absoluteSeat+" "+this.tableStatus.toString();
 		return playerString+"\n"+tablePlayerString;
@@ -78,15 +81,5 @@ public class TablePlayer implements Comparable<TablePlayer>{
 
 	public Table getTable() {
 		return table;
-	}
-
-	@Override
-	public int compareTo(TablePlayer o) {
-		if(absoluteSeat > o.absoluteSeat){
-			return 1;
-		}
-		else{
-			return -1;
-		}
 	}
 }

@@ -38,7 +38,7 @@ public class BettingRound extends Round<BetAction> {
 		BetActionType actionType = action.getBetActionType();
 		//Testing
 		System.out.println("Evaluation Action Method");
-		System.out.println(player.getTablePlayer().getPlayer().getName()+" "+action.toString());
+		System.out.println(player.getName()+" "+action.toString());
 		
 		if(actionType == BetActionType.FOLD){
 			this.evaluateFold(player);
@@ -64,7 +64,7 @@ public class BettingRound extends Round<BetAction> {
 	
 	private BetActionType getActionTypeFromInput(){
 		Scanner scanner = new Scanner(System.in);
-		System.out.println(activePlayer.getTablePlayer().getPlayer().getName()+"(m/r/f)");
+		System.out.println(activePlayer.getName()+"(m/r/f)");
 		String response = scanner.nextLine().trim();
 		BetActionType betType = null;
 		if(response.equals("m")){
@@ -214,7 +214,7 @@ public class BettingRound extends Round<BetAction> {
 			return standingRaise;
 		}
 		//TODO not chill for Limit Games needs revising
-		return player.getTablePlayer().getTable().getBigLimit();
+		return player.getTable().getBigLimit();
 	}
 	
 	public Pot getPot() {

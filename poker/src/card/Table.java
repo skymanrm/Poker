@@ -1,13 +1,10 @@
 package card;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import player.Player;
 import player.TablePlayer;
-
-
 
 public class Table {
 	
@@ -120,27 +117,40 @@ public class Table {
 		if(tablePlayers.size() == maxSeats){
 			throw new IllegalArgumentException("Adding player when table is full");
 		}
+		//TODO redundant
 		if(absoluteSeat < 0 || absoluteSeat >= maxSeats || seats[absoluteSeat]){
 			throw new IllegalArgumentException("Adding player to invalid seat number");
 		}
-		tablePlayers.add(new TablePlayer(player,this,tableBankroll,absoluteSeat,tableStatus));
+		TablePlayer playerToAdd = new TablePlayer(player,this,tableBankroll,absoluteSeat,tableStatus);
+		addPlayerToList(playerToAdd);
 		seats[absoluteSeat] = true;
-		Collections.sort(tablePlayers);
 	}
-	
+	private void addPlayerToList(TablePlayer player){
+		int counter = 0;
+		System.out.println(player.getName()+" is getting added");
+		for(TablePlayer tablePlayer: tablePlayers){
+			if(tablePlayer.getAbsoluteSeat()>player.getAbsoluteSeat()){
+				System.out.println(tablePlayer.getName()+" seat is greater");
+				tablePlayers.add(counter, player);
+				return;
+			}
+			counter++;
+		}
+		tablePlayers.add(player);
+	}
 	public void removePlayer(TablePlayer player){
-		if(tablePlayers.size() == 0){
-			throw new IllegalArgumentException("Removing player when table is empty");
+		if(!tablePlayers.contains(player)){
+			throw new IllegalArgumentException("Removing player that is not at table");
 		}
 		tablePlayers.remove(player);
 		seats[player.getAbsoluteSeat()] = false;
-		Collections.sort(tablePlayers);
 		cashOut(player);
 	}
 	
 	private void cashOut(TablePlayer player){
-		Player p = player.getPlayer();
-		p.increaseBankroll(player.getTableBankroll());
+		int amount = player.getTableBankroll();
+		player.increaseBankroll(amount);
+		player.decreaseTableBankroll(amount);
 	}
 	
 	public String toString(){

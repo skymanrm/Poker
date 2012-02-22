@@ -48,7 +48,7 @@ public abstract class Round<T> {
 		String s = roundTitle+"\n";
 		s+="Current Position: "+currentPosition;
 		s+="\tCompete: "+complete;
-		s+="\tActive Player: "+activePlayer.getTablePlayer().getPlayer().getName();
+		s+="\tActive Player: "+activePlayer.getName();
 		return s;
 	}
 	
