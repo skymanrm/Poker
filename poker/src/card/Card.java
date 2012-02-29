@@ -4,11 +4,6 @@ import java.util.Collections;
 import java.util.Stack;
 
 public class Card implements Comparable<Card>{
-	
-    public enum Rank { DEUCE, THREE, FOUR, FIVE, SIX,
-        SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING, ACE }
-
-    public enum Suit { CLUBS, DIAMONDS, HEARTS, SPADES }
     
     private final Rank rank;
     private final Suit suit;
@@ -34,14 +29,7 @@ public class Card implements Comparable<Card>{
 
 	@Override
 	public int compareTo(Card other) {
-		int hash = rank.hashCode();
-		int otherHash = other.rank.hashCode();
-		int difference = hash - otherHash;
-		
-		if(difference !=0){
-			return difference;
-		}
-		return 0;
+		return rank.rankIndex - other.rank.rankIndex;
 	}
 
     public static Stack<Card> newDeck() {

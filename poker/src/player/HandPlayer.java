@@ -3,8 +3,9 @@ package player;
 import java.util.ArrayList;
 import java.util.List;
 
+import table.Hand;
+
 import card.Card;
-import card.Hand;
 
 
 public class HandPlayer extends TablePlayer implements Comparable<HandPlayer>{

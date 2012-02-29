@@ -3,10 +3,10 @@ package round;
 import java.util.List;
 
 import player.HandPlayer;
+import table.Hand;
+import table.Pot;
 
 
-import card.Hand;
-import card.Pot;
 import card.Visibility;
 
 public class DealingRound extends BettingRound {

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import player.HandPlayer;
+import table.Hand;
 
-import card.Hand;
 import card.Visibility;
 
 public class HoldemManager implements RoundManager {

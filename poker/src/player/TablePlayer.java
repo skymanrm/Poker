@@ -1,7 +1,7 @@
 package player;
 
-import card.Table;
-import card.TableStatus;
+import table.Table;
+import table.TableStatus;
 
 public class TablePlayer extends Player{
 	

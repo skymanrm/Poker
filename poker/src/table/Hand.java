@@ -1,9 +1,12 @@
-package card;
+package table;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
+
+import card.Card;
+import card.Visibility;
 
 import player.HandPlayer;
 import player.TablePlayer;

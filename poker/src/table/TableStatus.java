@@ -1,4 +1,4 @@
-package card;
+package table;
 
 public enum TableStatus {
     SITTING_OUT,

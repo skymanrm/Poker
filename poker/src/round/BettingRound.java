@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import card.Pot;
 
 import player.HandPlayer;
 import player.HandPlayer.HandStatus;
+import table.Pot;
 import action.BetAction;
 import action.BetActionType;
 
