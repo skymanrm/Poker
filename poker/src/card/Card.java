@@ -9,7 +9,7 @@ public class Card implements Comparable<Card>{
     private final Suit suit;
     private Visibility visibility;
     
-    protected Card(Rank rank, Suit suit) {
+    public Card(Rank rank, Suit suit) {
         this.rank = rank;
         this.suit = suit;
         this.setVisibility(Visibility.PRIVATE);

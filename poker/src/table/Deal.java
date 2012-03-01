@@ -1,5 +1,6 @@
 package table;
 
+import handranking.FormedHand;
 import player.Player;
 
 /*
@@ -16,7 +17,15 @@ import player.Player;
 public class Deal {
 	
 	public static void main(String[] args){
-		
+		FormedHand fh = new FormedHand(CardsHelperFunctions.getRoyalFlush());
+		System.out.println(fh.toString());
+		fh = new FormedHand(CardsHelperFunctions.getRoyalFlush2());
+		System.out.println(fh.toString());
+		fh = new FormedHand(CardsHelperFunctions.getRoyalFlush3());
+		System.out.println(fh.toString());
+	}
+	
+	public void doTableStuff(){
 		Player player1 = new Player("Logan", 100);
 		Player player2 = new Player("Morgan", 100);
 		Player player3 = new Player("Colbert", 100);

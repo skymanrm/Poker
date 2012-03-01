@@ -1,7 +1,7 @@
 package card;
 
 public enum Rank{ 
-	DEUCE(0), 
+	TWO(0), 
 	THREE(1), 
 	FOUR(2), 
 	FIVE(3), 
