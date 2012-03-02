@@ -2,6 +2,7 @@ package handranking;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import card.Card;
 import card.Rank;
 import card.Suit;
@@ -9,14 +10,6 @@ import card.Suit;
 public abstract class HandRanking{
 
 	protected final List<Card> cards;
-	
-	protected final String[] singularRankNames = {"Ace","King","Queen","Jack","Ten",
-			"Nine","Eight","Seven","Six",
-			"Five","Four","Three","Two"};
-	
-	protected final String[] pluralRankNames = {"Aces","Kings","Queens","Jacks","Tens",
-			"Nines","Eights","Sevens","Sixes",
-			"Fives","Fours","Threes","Twos"};
 
 	public HandRanking(List<Card> cards) {
 		this.cards = cards;
@@ -34,14 +27,14 @@ public abstract class HandRanking{
 	}
 	
 	/**
-	 * @return all the cards in a players hand
+	 * @return the index of the HandRanking
 	 */
 	public abstract int getRankIndex();
 	
 	/**
-	 * @return HandRanking's name and its value (ex. Straight 10 high)
+	 * @return HandRanking's name and its value (ex. Ten High Straight)
 	 */
-	public abstract String getFormattedName(List<Card> cards);
+	public abstract String getFormattedName(List<Card> playingCards);
 	
 	protected List<Card> getSuitedCards(){
 		ArrayList<Card> suitedCards = new ArrayList<Card>();
@@ -54,32 +47,25 @@ public abstract class HandRanking{
 			if (suitedCards.size() >= 5){
 				return suitedCards;
 			}
-			else{
-				suitedCards.clear();
-			}
+			suitedCards.clear();
 		}
 		return null;
 	}
-	/*
-	 * for(Iterator<Integer> iter=liszt.iterator(); iter.hasNext();) {
-        int num = ((Integer)iter.next()).intValue();
-        total += num;
-    }
-	 */
+	
 	protected List<Card> getStraightCards(List<Card> cards){
 		List<Card> straightCards = new ArrayList<Card>();
 		straightCards.add(cards.get(0));
 		
-		for(Card current: cards){
-			Card lastCard = straightCards.get(straightCards.size()-1);
-			int dif = getDifference(lastCard, current);
+		for(short i = 1; i < cards.size(); i++){
+			Card current = cards.get(i);
+			Card last = getLast(straightCards);
+			int difference = getDifference(current, last);
 			
-			if(dif == 0){
+			if(difference == 0){
 				continue;
 			}
-			else if(dif == 1){
+			else if(difference == 1){
 				straightCards.add(current);
-
 				if(straightCards.size()==5){
 					return straightCards;
 				}
@@ -89,20 +75,25 @@ public abstract class HandRanking{
 				straightCards.add(current);
 			}
 		}
-		return getLowStraightCards(cards.get(0), straightCards);
+		return getLowStraight(cards.get(0), straightCards);
 	}
 	
-	private List<Card> getLowStraightCards(Card firstCard, List<Card> straightCards){
+	private List<Card> getLowStraight(Card firstCard, List<Card> straightCards){
 		boolean hasAce = firstCard.getRank() == Rank.ACE;
-		boolean hasConnectedTwo = straightCards.get(straightCards.size()-1).getRank() == Rank.TWO;
-		if (straightCards.size() == 4 && hasAce && hasConnectedTwo){
+		boolean conntectedTwo = !straightCards.isEmpty() && getLast(straightCards).getRank() == Rank.TWO;
+		if (straightCards.size() == 4 && hasAce && conntectedTwo){
 			straightCards.add(firstCard);
 			return straightCards;
 		}
 		return null;
 	}
 	
+	
 	protected int getDifference(Card card1, Card card2){
 		return (card1.getRank().rankIndex - card2.getRank().rankIndex);
+	}
+	
+	protected Card getLast(List<Card> cards){
+		return cards.get(cards.size() - 1);
 	}
 }

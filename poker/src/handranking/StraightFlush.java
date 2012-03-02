@@ -18,10 +18,11 @@ public class StraightFlush extends HandRanking{
 
 	@Override
 	public String getFormattedName(List<Card> playingCards) {
-		if(playingCards.get(0).getRank() == Rank.ACE){
+		Rank rank = playingCards.get(0).getRank();
+		if(rank == Rank.ACE){
 			return "Royal Flush";
 		}
-		return singularRankNames[0]+" High Straight Flush";
+		return rank.singularName+" High Straight Flush";
 	}
 
 	@Override

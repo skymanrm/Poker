@@ -20,6 +20,7 @@ public class FormedHand implements Comparable<FormedHand>{
 	private void formBestHand() {
 		int counter = 0;
 		HandRanking hr;
+		
 		do{
 			hr = getHandRanking(counter);
 			playingCards = hr.getBestFiveCards();
@@ -27,12 +28,21 @@ public class FormedHand implements Comparable<FormedHand>{
 				displayName = hr.getFormattedName(playingCards);
 				handRankingIndex = hr.getRankIndex();
 			}
+			counter++;
 		}while(playingCards == null);
 	}
 
 	private HandRanking getHandRanking(int index){
 		switch(index){
 		case 0: return new StraightFlush(cards);
+		case 1: return new Quads(cards);
+		case 2: return new FullHouse(cards);
+		case 3: return new Flush(cards);
+		case 4: return new Straight(cards);
+		case 5: return new Trips(cards);
+		case 6: return new TwoPair(cards);
+		case 7: return new Pair(cards);
+		case 8: return new HighCard(cards);
 		}
 		return null;
 	}

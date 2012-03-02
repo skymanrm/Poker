@@ -1,23 +1,28 @@
 package card;
 
 public enum Rank{ 
-	TWO(0), 
-	THREE(1), 
-	FOUR(2), 
-	FIVE(3), 
-	SIX(4),
-    SEVEN(5), 
-    EIGHT(6), 
-    NINE(7), 
-    TEN(8), 
-    JACK(9), 
-    QUEEN(10), 
-    KING(11), 
-    ACE(12);
+	
+	ACE(12,"Ace", "Aces"),
+    KING(11,"King", "Kings"), 
+    QUEEN(10,"Queen", "Queens"), 
+    JACK(9,"Jack", "Jacks"), 
+    TEN(8,"Ten", "Tens"), 
+    NINE(7,"Nine", "Nines"), 
+    EIGHT(6,"Eight", "Eights"),
+    SEVEN(5,"Seven", "Sevens"),
+    SIX(4,"Six", "Sixes"),
+    FIVE(3,"Five", "Fives"), 
+    FOUR(2,"Four", "Fours"), 
+    THREE(1,"Three", "Threes"), 
+    TWO(0,"Two", "Twos");
 	
 	public final int rankIndex;
+	public final String singularName;
+	public final String pluralName;
 	
-	Rank(int rankIndex){
+	Rank(int rankIndex, String singularName, String pluralName){
 		this.rankIndex = rankIndex;
+		this.singularName = singularName;
+		this.pluralName = pluralName;
 	}
 }
