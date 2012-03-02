@@ -52,6 +52,6 @@ public class Card implements Comparable<Card>{
 	}
 	
 	public String toString(){
-		return rank.toString()+" "+suit.toString()+" "+visibility.toString();
+		return rank.shortName+suit.shortName;
 	}
 }

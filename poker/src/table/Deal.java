@@ -16,8 +16,7 @@ import player.Player;
 public class Deal {
 	
 	public static void main(String[] args){
-		HandTester.showHandWithList(HandTester.getRandom(5));
-		
+		HandTester.showRandomHands(7, 7);
 		//doTableStuff();
 	}
 	

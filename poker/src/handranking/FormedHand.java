@@ -77,9 +77,17 @@ public class FormedHand implements Comparable<FormedHand>{
 
 	@Override
 	public String toString() {
-		return "FormedHand [cards=" + cards + ", playingCards=" + playingCards
-				+ ", handRankingIndex=" + handRankingIndex + ", displayName="
-				+ displayName + "]";
+		StringBuilder sb = new StringBuilder();
+		sb.append("Cards: ");
+		for(Card card: cards){
+			sb.append(card.toString()+",");
+		}
+		sb.append("\tPlaying: ");
+		for(Card card: playingCards){
+			sb.append(card.toString()+",");
+		}
+		sb.append("\t"+displayName);
+		return sb.toString();
 	}
 	
 }
