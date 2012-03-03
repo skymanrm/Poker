@@ -16,8 +16,8 @@ public class Quads extends PairedHandRanking {
 	}
 
 	@Override
-	public int getRankIndex() {
-		return 7;
+	public HandRankingType getType() {
+		return HandRankingType.QUADS;
 	}
 
 	@Override

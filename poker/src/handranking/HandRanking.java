@@ -29,7 +29,7 @@ public abstract class HandRanking{
 	/**
 	 * @return the index of the HandRanking
 	 */
-	public abstract int getRankIndex();
+	public abstract HandRankingType getType();
 	
 	/**
 	 * @return HandRanking's name and its value (ex. Ten High Straight)
@@ -59,7 +59,7 @@ public abstract class HandRanking{
 		for(short i = 1; i < cards.size(); i++){
 			Card current = cards.get(i);
 			Card last = getLast(straightCards);
-			int difference = getDifference(current, last);
+			int difference = getDifference(last, current);
 			
 			if(difference == 0){
 				continue;

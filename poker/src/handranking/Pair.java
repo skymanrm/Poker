@@ -16,8 +16,8 @@ public class Pair extends PairedHandRanking {
 	}
 
 	@Override
-	public int getRankIndex() {
-		return 1;
+	public HandRankingType getType() {
+		return HandRankingType.PAIR;
 	}
 
 	@Override

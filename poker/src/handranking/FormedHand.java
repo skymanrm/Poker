@@ -5,9 +5,9 @@ import card.Card;
 
 public class FormedHand implements Comparable<FormedHand>{
 
-	private List<Card> cards;
+	private final List<Card> cards;
 	private List<Card> playingCards;
-	private int handRankingIndex;
+	private HandRankingType handRankingType;
 	private String displayName;
 	
 	public FormedHand(List<Card> cards){
@@ -26,7 +26,7 @@ public class FormedHand implements Comparable<FormedHand>{
 			playingCards = hr.getBestFiveCards();
 			if(playingCards != null){
 				displayName = hr.getFormattedName(playingCards);
-				handRankingIndex = hr.getRankIndex();
+				handRankingType = hr.getType();
 			}
 			counter++;
 		}while(playingCards == null);
@@ -48,11 +48,11 @@ public class FormedHand implements Comparable<FormedHand>{
 	}
 	@Override
 	public int compareTo(FormedHand o) {
-		if(handRankingIndex < o.handRankingIndex){
-			return -1;
-		}
-		else if(handRankingIndex > o.handRankingIndex){
+		if(handRankingType.index > o.handRankingType.index){
 			return 1;
+		}
+		else if(handRankingType.index < o.handRankingType.index){
+			return -1;
 		}
 		else{
 			return compareSameHandRankingCards(o);
@@ -62,10 +62,13 @@ public class FormedHand implements Comparable<FormedHand>{
 	private int compareSameHandRankingCards(FormedHand o){
 		for(int i = 0; i<5;i++){
 			Card c = playingCards.get(i);
-			Card oc = o.playingCards.get(0);
+			Card oc = o.playingCards.get(i);
 			int compare = c.compareTo(oc);
-			if(compare!=0){
-				return compare;
+			if(compare > 0){
+				return 1;
+			}
+			else if(compare < 0){
+				return -1;
 			}
 		}
 		return 0;
@@ -90,4 +93,7 @@ public class FormedHand implements Comparable<FormedHand>{
 		return sb.toString();
 	}
 	
+	public HandRankingType getType() {
+		return handRankingType;
+	}
 }

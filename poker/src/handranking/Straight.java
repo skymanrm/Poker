@@ -17,8 +17,8 @@ public class Straight extends HandRanking {
 	}
 
 	@Override
-	public int getRankIndex() {
-		return 4;
+	public HandRankingType getType() {
+		return HandRankingType.STRAIGHT;
 	}
 
 	@Override

@@ -16,8 +16,8 @@ public class FullHouse extends PairedHandRanking {
 	}
 
 	@Override
-	public int getRankIndex() {
-		return 6;
+	public HandRankingType getType() {
+		return HandRankingType.FULL_HOUSE;
 	}
 
 	@Override
@@ -26,5 +26,4 @@ public class FullHouse extends PairedHandRanking {
 		String plural2 = playingCards.get(3).getRank().pluralName;
 		return "Full House "+plural3+" full of "+plural2;
 	}
-
 }

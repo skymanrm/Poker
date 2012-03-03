@@ -1,6 +1,13 @@
 package table;
 
+import static org.junit.Assert.assertEquals;
+import handranking.FormedHand;
+
+import java.util.List;
+
+import card.Card;
 import player.Player;
+import test.HandTester;
 
 /*
  * What happens at an 8 seat 7 Card Stud table if everyone stays in until Seventh Street? 
@@ -15,9 +22,25 @@ import player.Player;
 
 public class Deal {
 	
+	private List<Card> cards;
+	private FormedHand fh;
+	private FormedHand fh2;
+	
 	public static void main(String[] args){
-		HandTester.showRandomHands(7, 7);
+		//HandTester.showRandomHands(7, 7);
 		//doTableStuff();
+		List<Card> cards;
+		FormedHand fh;
+		FormedHand fh2;
+		
+		cards = HandTester.formatCards("KS,KC,KH,KD,AH");
+		fh = new FormedHand(cards);
+	
+		cards = HandTester.formatCards("JS,JC,JH,AH,KH,KD,AD");
+		fh2 = new FormedHand(cards);
+		
+		int compare = fh.compareTo(fh2);
+		assertEquals("Result", compare, -1);
 	}
 	
 	public static void doTableStuff(){

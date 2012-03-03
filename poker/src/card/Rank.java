@@ -20,6 +20,7 @@ public enum Rank{
 	public final String singularName;
 	public final String pluralName;
 	public final String shortName;
+	
 	Rank(int rankIndex, String singularName, String pluralName, String shortName){
 		this.rankIndex = rankIndex;
 		this.singularName = singularName;

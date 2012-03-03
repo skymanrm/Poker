@@ -21,8 +21,8 @@ public class Flush extends HandRanking {
 	}
 
 	@Override
-	public int getRankIndex() {
-		return 5;
+	public HandRankingType getType() {
+		return HandRankingType.FLUSH;
 	}
 
 	@Override

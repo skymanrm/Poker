@@ -16,8 +16,8 @@ public class TwoPair extends PairedHandRanking {
 	}
 
 	@Override
-	public int getRankIndex() {
-		return 2;
+	public HandRankingType getType() {
+		return HandRankingType.TWO_PAIR;
 	}
 
 	@Override

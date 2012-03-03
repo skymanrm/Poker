@@ -16,8 +16,8 @@ public class Trips extends PairedHandRanking {
 	}
 
 	@Override
-	public int getRankIndex() {
-		return 3;
+	public HandRankingType getType() {
+		return HandRankingType.TRIPS;
 	}
 
 	@Override

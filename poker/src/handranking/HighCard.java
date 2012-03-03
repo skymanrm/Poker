@@ -16,8 +16,8 @@ public class HighCard extends PairedHandRanking {
 	}
 
 	@Override
-	public int getRankIndex() {
-		return 0;
+	public HandRankingType getType() {
+		return HandRankingType.HIGH_CARD;
 	}
 
 	@Override

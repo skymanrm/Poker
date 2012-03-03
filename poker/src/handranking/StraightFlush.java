@@ -12,8 +12,8 @@ public class StraightFlush extends HandRanking{
 	}
 
 	@Override
-	public int getRankIndex() {
-		return 8;
+	public HandRankingType getType() {
+		return HandRankingType.STRAIGHT_FLUSH;
 	}
 
 	@Override
