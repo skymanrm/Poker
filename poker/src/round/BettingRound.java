@@ -14,7 +14,6 @@ public class BettingRound extends Round<BetAction> {
 
 	protected int standingRaise;
 	protected int totalToCall;
-	protected int totalRoundValue;
 	
 	protected final List<HandPlayer> allInPlayers;
 	protected final Pot pot;
@@ -25,7 +24,6 @@ public class BettingRound extends Round<BetAction> {
 		super(startingPosition, handPlayers);
 		totalToCall = 0;
 		standingRaise = 0;
-		totalRoundValue = 0;
 		this.roundTitle = "Betting Round";
 		this.allInPlayers = new ArrayList<HandPlayer>();
 		this.pot = pot;
@@ -118,7 +116,6 @@ public class BettingRound extends Round<BetAction> {
 			putPlayerAllIn(player);
 		}
 		player.addToPot(amount);
-		totalRoundValue+=amount;
 	}
 	
 	/**
@@ -142,7 +139,6 @@ public class BettingRound extends Round<BetAction> {
 			resetActedForPlayers(player, false);
 		}
 		player.addToPot(amount);
-		totalRoundValue+=amount;
 		totalToCall+=amount;
 	}
 	
@@ -182,7 +178,6 @@ public class BettingRound extends Round<BetAction> {
 		for(HandPlayer player: handPlayers){
 			player.resetForNewRound();
 		}
-		pot.addToTotalValue(totalRoundValue);
 	}
 	
 	private void resetActedForPlayers(HandPlayer raisePlayer, boolean canRaise) {
@@ -215,7 +210,7 @@ public class BettingRound extends Round<BetAction> {
 			return standingRaise;
 		}
 		//TODO not chill for Limit Games needs revising
-		return player.getTable().getBigLimit();
+		return player.getTablePlayer().getTable().getBigLimit();
 	}
 	
 	public Pot getPot() {
@@ -225,10 +220,6 @@ public class BettingRound extends Round<BetAction> {
 	
 	public int getStandingRaise() {
 		return standingRaise;
-	}
-
-	public int getTotalRoundValue() {
-		return totalRoundValue;
 	}
 	
 	@Override

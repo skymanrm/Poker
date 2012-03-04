@@ -67,7 +67,9 @@ public class Hand {
 			while(!dealingRound.isComplete()){
 				HandPlayer player = dealingRound.getActivePlayer();
 				System.out.println(player.toString());
+				System.out.println("Pot Value: "+pot.getTotalValue());
 				dealingRound.evaluateAction(dealingRound.getAction());
+				System.out.println("Pot Value: "+pot.getTotalValue());
 				System.out.println(player.toString());
 				System.out.println(dealingRound.toString());
 			}
@@ -84,7 +86,7 @@ public class Hand {
 			//TODO don't just disregard remainders
 			int divisor = winners.size();
 			for(HandPlayer player: winners){
-				player.increaseTableBankroll(p.getTotalValue()/divisor);
+				player.getTablePlayer().increaseTableBankroll(p.getTotalValue()/divisor);
 				if(p.isContested()){
 					System.out.println(player.victoryString());
 				}

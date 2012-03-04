@@ -10,9 +10,10 @@ import table.HandStatus;
 import card.Card;
 
 
-public class HandPlayer extends TablePlayer implements Comparable<HandPlayer>{
+public class HandPlayer implements Comparable<HandPlayer>{
 	
 	private final Hand hand;
+	private final TablePlayer tablePlayer;
 	
 	private final List<Card> cards;
 	private final int relativeSeat;
@@ -24,7 +25,7 @@ public class HandPlayer extends TablePlayer implements Comparable<HandPlayer>{
 	private FormedHand formedHand;
 	
 	public HandPlayer(TablePlayer tablePlayer, Hand hand, HandStatus handStatus) {
-		super(tablePlayer);
+		this.tablePlayer = tablePlayer;
 		this.hand = hand;
 		this.cards = new ArrayList<Card>();
 		this.relativeSeat = determineRelativeSeat();
@@ -36,9 +37,9 @@ public class HandPlayer extends TablePlayer implements Comparable<HandPlayer>{
 	}
 	
 	private int determineRelativeSeat(){
-		int buttonSeat = getTable().getButtonSeat();
-		int maxSeats = getTable().getMaxSeats();
-		int absoluteSeat = getAbsoluteSeat();
+		int buttonSeat = tablePlayer.getTable().getButtonSeat();
+		int maxSeats =  tablePlayer.getTable().getMaxSeats();
+		int absoluteSeat =  tablePlayer.getAbsoluteSeat();
 		return ((maxSeats - buttonSeat) + absoluteSeat) % maxSeats;
 	}
 	
@@ -76,7 +77,7 @@ public class HandPlayer extends TablePlayer implements Comparable<HandPlayer>{
 	}
 	
 	public String toString(){
-		String s = super.toString();
+		String s = tablePlayer.toString();
 		s+="\t\tHole Cards: ";
 		for(Card card : cards){
 			s+=card.toString()+", ";
@@ -93,7 +94,7 @@ public class HandPlayer extends TablePlayer implements Comparable<HandPlayer>{
 	}
 	
 	public void addToPot(int amount){
-		decreaseTableBankroll(amount);
+		tablePlayer.decreaseTableBankroll(amount);
 		hand.getPot().addToTotalValue(amount);
 		amountCommittedToRound+=amount;
 	}
@@ -124,6 +125,18 @@ public class HandPlayer extends TablePlayer implements Comparable<HandPlayer>{
 	}
 	
 	public String victoryString(){
-		return getName()+" wins with a "+formedHand.getDisplayName();
+		return  getName()+" wins with a "+formedHand.getDisplayName();
+	}
+
+	public TablePlayer getTablePlayer() {
+		return tablePlayer;
+	}
+	
+	public String getName(){
+		return tablePlayer.getName();
+	}
+	
+	public int getTableBankroll(){
+		return tablePlayer.getTableBankroll();
 	}
 }

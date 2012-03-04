@@ -150,7 +150,7 @@ public class Table {
 	
 	private void cashOut(TablePlayer player){
 		int amount = player.getTableBankroll();
-		player.increaseBankroll(amount);
+		player.getPlayer().increaseBankroll(amount);
 		player.decreaseTableBankroll(amount);
 	}
 	

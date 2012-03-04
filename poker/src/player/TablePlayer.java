@@ -3,24 +3,16 @@ package player;
 import table.Table;
 import table.TableStatus;
 
-public class TablePlayer extends Player{
+public class TablePlayer{
 	
 	private final Table table;
-	
+	private final Player player;
 	private int tableBuyin;
 	private int absoluteSeat;
 	private TableStatus tableStatus;
 	
-	public TablePlayer(TablePlayer player){
-		super(player.getName(),player.getBankroll());
-		this.table = player.getTable();
-		this.absoluteSeat = player.getAbsoluteSeat();
-		this.tableStatus = player.getTableStatus();
-		this.tableBuyin = player.getTableBankroll();
-	}
-	
 	public TablePlayer(Player player,Table table, int tableBankroll, int absoluteSeat, TableStatus tableStatus){
-		super(player);
+		this.player = player;
 		this.table = table;
 		this.setAbsoluteSeat(absoluteSeat);
 		this.setTableStatus(tableStatus);
@@ -44,10 +36,10 @@ public class TablePlayer extends Player{
 	
 	//TODO need to change for rebuys
 	public void setTableBankroll(int tableBankroll) {
-		if(tableBankroll > getBankroll() || tableBankroll < 0){
+		if(tableBankroll > player.getBankroll() || tableBankroll < 0){
 			throw new IllegalArgumentException("Table Buyin Amount is Invalid");
 		}
-		decreaseBankroll(tableBankroll);
+		player.decreaseBankroll(tableBankroll);
 		tableBuyin = tableBankroll;
 	}
 
@@ -78,5 +70,13 @@ public class TablePlayer extends Player{
 
 	public Table getTable() {
 		return table;
+	}
+
+	public Player getPlayer() {
+		return player;
+	}
+	
+	public String getName(){
+		return player.getName();
 	}
 }
