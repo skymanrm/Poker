@@ -4,9 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-
 import player.HandPlayer;
-import player.HandPlayer.HandStatus;
+import table.HandStatus;
 import table.Pot;
 import action.BetAction;
 import action.BetActionType;
@@ -52,6 +51,7 @@ public class BettingRound extends Round<BetAction> {
 		
 		player.setActed(true);
 		checkIfComplete();
+		setNextPlayer();
 	}
 
 	public BetAction getAction(){
@@ -107,6 +107,7 @@ public class BettingRound extends Round<BetAction> {
 	
 	private void evaluateFold(HandPlayer player){
 		player.setHandStatus(HandStatus.FOLDED);
+		currentPosition--;
 		pot.removePlayerFromPot(player);
 	}
 	

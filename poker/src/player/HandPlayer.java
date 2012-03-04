@@ -3,7 +3,9 @@ package player;
 import java.util.ArrayList;
 import java.util.List;
 
+import table.FormedHand;
 import table.Hand;
+import table.HandStatus;
 
 import card.Card;
 
@@ -11,7 +13,7 @@ import card.Card;
 public class HandPlayer extends TablePlayer implements Comparable<HandPlayer>{
 	
 	private final Hand hand;
-
+	
 	private final List<Card> cards;
 	private final int relativeSeat;
 	private HandStatus handStatus;
@@ -19,9 +21,7 @@ public class HandPlayer extends TablePlayer implements Comparable<HandPlayer>{
 	private int amountCommittedToRound;
 	private boolean canRaise;
 	
-	public enum HandStatus {
-	    FOLDED, ALL_IN, PLAYING, SAT_OUT
-	}
+	private FormedHand formedHand;
 	
 	public HandPlayer(TablePlayer tablePlayer, Hand hand, HandStatus handStatus) {
 		super(tablePlayer);
@@ -32,6 +32,7 @@ public class HandPlayer extends TablePlayer implements Comparable<HandPlayer>{
 		this.acted = false;
 		this.setCanRaise(false);
 		this.amountCommittedToRound = 0;
+		this.formedHand = null;
 	}
 	
 	private int determineRelativeSeat(){
@@ -76,11 +77,6 @@ public class HandPlayer extends TablePlayer implements Comparable<HandPlayer>{
 	
 	public String toString(){
 		String s = super.toString();
-		s+="\t\t"+handStatus.toString();
-		s+="\t\tRelative Seat: "+relativeSeat;
-		s+="\t\tHas Acted: "+acted;
-		s+="\t\tCan Raise: "+canRaise;
-		s+="\t\tAmount Commited to Round: "+amountCommittedToRound;
 		s+="\t\tHole Cards: ";
 		for(Card card : cards){
 			s+=card.toString()+", ";
@@ -98,7 +94,7 @@ public class HandPlayer extends TablePlayer implements Comparable<HandPlayer>{
 	
 	public void addToPot(int amount){
 		decreaseTableBankroll(amount);
-		hand.increasePotValue(amount);
+		hand.getPot().addToTotalValue(amount);
 		amountCommittedToRound+=amount;
 	}
 
@@ -118,5 +114,16 @@ public class HandPlayer extends TablePlayer implements Comparable<HandPlayer>{
 			acted = false;
 			canRaise = true;
 		}
+	}
+
+	public FormedHand getFormedHand() {
+		if(formedHand == null){
+			formedHand = new FormedHand(this, hand.getCommunityCards());
+		}
+		return formedHand;
+	}
+	
+	public String victoryString(){
+		return getName()+" wins with a "+formedHand.getDisplayName();
 	}
 }

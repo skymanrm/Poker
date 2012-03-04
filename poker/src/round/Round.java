@@ -3,10 +3,9 @@ package round;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import player.HandPlayer;
-import player.HandPlayer.HandStatus;
 import table.Hand;
+import table.HandStatus;
 
 public abstract class Round<T> {
 	protected int currentPosition;

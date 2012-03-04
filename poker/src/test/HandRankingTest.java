@@ -6,10 +6,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import handranking.FormedHand;
 import handranking.HandRankingType;
 
 import org.junit.Test;
+
+import table.FormedHand;
 
 import card.Card;
 

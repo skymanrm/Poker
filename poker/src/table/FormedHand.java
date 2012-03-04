@@ -1,27 +1,59 @@
-package handranking;
+package table;
+import handranking.Flush;
+import handranking.FullHouse;
+import handranking.HandRanking;
+import handranking.HandRankingType;
+import handranking.HighCard;
+import handranking.Pair;
+import handranking.Quads;
+import handranking.Straight;
+import handranking.StraightFlush;
+import handranking.Trips;
+import handranking.TwoPair;
+
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import player.HandPlayer;
 import card.Card;
 
 public class FormedHand implements Comparable<FormedHand>{
 
+	private final HandPlayer player;
 	private final List<Card> cards;
 	private List<Card> playingCards;
 	private HandRankingType handRankingType;
 	private String displayName;
 	
+	public FormedHand(HandPlayer player, List<Card> commuityCards){
+		this.player = player;
+		//Makes a copy so it doesn't modify cards
+		cards = new ArrayList<Card>();
+		cards.addAll(player.getCards());
+		cards.addAll(commuityCards);
+		
+		Collections.sort(this.cards);
+		Collections.reverse(this.cards);
+		playingCards = null;
+		formBestHand();
+	}
+	
+	//For Testing
 	public FormedHand(List<Card> cards){
+		this.player = null;
 		this.cards = cards;
 		Collections.sort(this.cards);
 		Collections.reverse(this.cards);
+		playingCards = null;
 		formBestHand();
 	}
-
+	
 	private void formBestHand() {
 		int counter = 0;
 		HandRanking hr;
 		
-		do{
+		while(playingCards == null){
 			hr = getHandRanking(counter);
 			playingCards = hr.getBestFiveCards();
 			if(playingCards != null){
@@ -29,7 +61,7 @@ public class FormedHand implements Comparable<FormedHand>{
 				handRankingType = hr.getType();
 			}
 			counter++;
-		}while(playingCards == null);
+		}
 	}
 
 	private HandRanking getHandRanking(int index){
@@ -95,5 +127,9 @@ public class FormedHand implements Comparable<FormedHand>{
 	
 	public HandRankingType getType() {
 		return handRankingType;
+	}
+
+	public HandPlayer getPlayer() {
+		return player;
 	}
 }

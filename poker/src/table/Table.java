@@ -33,7 +33,7 @@ public class Table {
 			throw new IllegalArgumentException("At least two players must be ready to start a hand");
 		}
 		this.moveButton(readyPlayers);
-		return new Hand(currentGameType, this, readyPlayers);
+		return new Hand(currentGameType, this, tablePlayers);
 	}
 	
 	private void initSeats(){

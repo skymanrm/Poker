@@ -73,10 +73,7 @@ public class TablePlayer extends Player{
 	}
 
 	public String toString(){
-		String playerString = super.toString();
-		String tablePlayerString = "Absolute Seat: "
-		+this.absoluteSeat+" "+this.tableStatus.toString();
-		return playerString+"\n"+tablePlayerString;
+		return getName()+" TableBankroll: "+tableBuyin;
 	}
 
 	public Table getTable() {

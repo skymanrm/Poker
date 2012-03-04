@@ -11,11 +11,13 @@ public class Pot {
 	private final List<Pot> sidePots;
 	private List<HandPlayer> eligiblePlayers;
 	private int totalValue;
+	private boolean contested;
 	
-	public Pot(){
+	public Pot(List<HandPlayer> eligiblePlayers){
 		sidePots = new ArrayList<Pot>();
-		eligiblePlayers = new ArrayList<HandPlayer>();
+		this.eligiblePlayers = eligiblePlayers;
 		totalValue = 0;
+		contested = true;
 	}
 
 	public Pot(List<HandPlayer> eligiblePlayers, int totalValue){
@@ -60,6 +62,9 @@ public class Pot {
 		for(Pot pot: sidePots){
 			pot.removePlayerFromPot(player);
 		}
+		if(eligiblePlayers.size()==1){
+			contested = false;
+		}
 	}
 	
 	public int getTotalValue() {
@@ -68,5 +73,9 @@ public class Pot {
 
 	public void addToTotalValue(int amount) {
 		totalValue += amount;
+	}
+	
+	public boolean isContested(){
+		return contested;
 	}
 }
