@@ -13,11 +13,15 @@ public class DealingRound extends BettingRound {
 
 	private final List<Visibility> visibilities;
 	
-	public DealingRound(int startingPosition,List<HandPlayer> handPlayers,Pot pot, List<Visibility> visibilities) {
-		super(startingPosition, handPlayers,pot);
+	public DealingRound(int startingPosition,List<HandPlayer> handPlayers,Pot pot, List<Visibility> visibilities, boolean blinds) {
+		super(startingPosition, handPlayers,pot, blinds);
 		this.visibilities = visibilities;
-		this.roundTitle = "Dealing Round";
-		Hand hand = handPlayers.get(0).getHand();
+		
+		addCards();
+	}
+
+	private void addCards(){
+		Hand hand = getHand();
 		for(Visibility v: visibilities){
 			if(v == Visibility.PRIVATE || v == Visibility.PUBLIC){
 				for(HandPlayer player: handPlayers){
@@ -29,7 +33,7 @@ public class DealingRound extends BettingRound {
 			}
 		}
 	}
-
+	
 	public List<Visibility> getVisibilities() {
 		return visibilities;
 	}

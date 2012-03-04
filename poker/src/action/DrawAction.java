@@ -13,8 +13,8 @@ public class DrawAction extends Action {
 
 	private final List<Card> discards;
 	
-	public DrawAction(long time, Round<DrawAction> round, HandPlayer handPlayer, List<Card> discards) {
-		super(time, round, handPlayer);
+	public DrawAction(Round<DrawAction> round, HandPlayer handPlayer, List<Card> discards) {
+		super(round, handPlayer);
 		this.discards = discards;
 	}
 

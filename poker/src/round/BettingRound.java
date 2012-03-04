@@ -20,22 +20,39 @@ public class BettingRound extends Round<BetAction> {
 	
 	//TODO manually keep track of # players instead of counting every time
 	
-	public BettingRound(int startingPosition, List<HandPlayer> handPlayers, Pot pot) {
+	public BettingRound(int startingPosition, List<HandPlayer> handPlayers, Pot pot, boolean blinds) {
 		super(startingPosition, handPlayers);
 		totalToCall = 0;
 		standingRaise = 0;
-		this.roundTitle = "Betting Round";
 		this.allInPlayers = new ArrayList<HandPlayer>();
 		this.pot = pot;
+		if(blinds){
+			putInBlinds();
+		}
+	}
+
+	private void putInBlinds() {
+		List<HandPlayer> handPlayers = getHandPlayers();
+		int small = getSmallLimit();
+		int big = getBigLimit();
+		if(handPlayers.size() == 2){
+			handPlayers.get(0).addToPot(small);
+			handPlayers.get(1).addToPot(big);
+			totalToCall+=big;
+			standingRaise = big;
+		}
+		else{
+			handPlayers.get(1).addToPot(small);
+			handPlayers.get(2).addToPot(big);
+			totalToCall+=big;
+			standingRaise = big;
+		}
 	}
 
 	@Override
 	public void evaluateAction(BetAction action) {
 		HandPlayer player = action.getHandPlayer();
 		BetActionType actionType = action.getBetActionType();
-		//Testing
-		System.out.println("Evaluation Action Method");
-		System.out.println(player.getName()+" "+action.toString());
 		
 		if(actionType == BetActionType.FOLD){
 			this.evaluateFold(player);
@@ -54,9 +71,8 @@ public class BettingRound extends Round<BetAction> {
 
 	public BetAction getAction(){
 		BetActionType betType = getActionTypeFromInput();
-		java.util.Date date= new java.util.Date();
 		//TODO should ask amount
-		BetAction bet = new BetAction(date.getTime(), this, activePlayer, betType, 2);
+		BetAction bet = new BetAction(this, activePlayer, betType, 2);
 		return bet;
 	}
 	
@@ -210,7 +226,7 @@ public class BettingRound extends Round<BetAction> {
 			return standingRaise;
 		}
 		//TODO not chill for Limit Games needs revising
-		return player.getTablePlayer().getTable().getBigLimit();
+		return getBigLimit();
 	}
 	
 	public Pot getPot() {
@@ -220,6 +236,14 @@ public class BettingRound extends Round<BetAction> {
 	
 	public int getStandingRaise() {
 		return standingRaise;
+	}
+	
+	private int getBigLimit(){
+		return getHandPlayers().get(0).getTablePlayer().getTable().getBigLimit();
+	}
+	
+	private int getSmallLimit(){
+		return getHandPlayers().get(0).getTablePlayer().getTable().getSmallLimit();
 	}
 	
 	@Override

@@ -9,8 +9,8 @@ public abstract class Action {
 	private final Round<?> round;
 	private final HandPlayer handPlayer; 
 	
-	public Action(long time, Round<?> round, HandPlayer handPlayer) {
-		this.time = time;
+	public Action(Round<?> round, HandPlayer handPlayer) {
+		this.time = System.currentTimeMillis();
 		this.round = round;
 		this.handPlayer = handPlayer;
 	}

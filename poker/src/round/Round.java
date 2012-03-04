@@ -13,14 +13,12 @@ public abstract class Round<T> {
 	protected boolean complete;
 	protected final List<HandPlayer> handPlayers;
 	protected HandPlayer activePlayer;
-	protected String roundTitle;
 	
 	public Round(int startingPosition, List<HandPlayer> handPlayers) {
 		
 		this.actions = new ArrayList<T>();
 		this.complete = false;
 		this.handPlayers = handPlayers;
-		this.roundTitle = "Round";
 		//setNextPlayer increments startingPosition
 		this.currentPosition = startingPosition-1;
 		//Sets Active Player
@@ -44,8 +42,7 @@ public abstract class Round<T> {
 	}
 	
 	public String toString(){
-		String s = roundTitle+"\n";
-		s+="Current Position: "+currentPosition;
+		String s = "Current Position: "+currentPosition;
 		s+="\tCompete: "+complete;
 		s+="\tActive Player: "+activePlayer.getName();
 		return s;

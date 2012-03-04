@@ -16,7 +16,7 @@ public class TablePlayer{
 		this.table = table;
 		this.setAbsoluteSeat(absoluteSeat);
 		this.setTableStatus(tableStatus);
-		this.setTableBankroll(tableBankroll);
+		this.buyInTableBankroll(tableBankroll);
 	}
 
 	public int getTableBankroll() {
@@ -34,13 +34,12 @@ public class TablePlayer{
 		tableBuyin-=amount;
 	}
 	
-	//TODO need to change for rebuys
-	public void setTableBankroll(int tableBankroll) {
-		if(tableBankroll > player.getBankroll() || tableBankroll < 0){
+	public void buyInTableBankroll(int tableBankroll) {
+		if(tableBuyin + tableBankroll > player.getBankroll() || tableBankroll < 0){
 			throw new IllegalArgumentException("Table Buyin Amount is Invalid");
 		}
 		player.decreaseBankroll(tableBankroll);
-		tableBuyin = tableBankroll;
+		tableBuyin += tableBankroll;
 	}
 
 	public int getAbsoluteSeat() {

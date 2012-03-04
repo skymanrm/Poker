@@ -7,8 +7,8 @@ public class ShowdownAction extends Action {
 
 	private final boolean muck;
 	
-	public ShowdownAction(long time, Round<ShowdownAction> round, HandPlayer handPlayer, boolean muck) {
-		super(time, round, handPlayer);
+	public ShowdownAction(Round<ShowdownAction> round, HandPlayer handPlayer, boolean muck) {
+		super(round, handPlayer);
 		this.muck = muck;
 	}
 
