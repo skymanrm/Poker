@@ -70,30 +70,27 @@ public class BettingRound extends Round<BetAction> {
 	}
 
 	public BetAction getAction(){
-		BetActionType betType = getActionTypeFromInput();
-		//TODO should ask amount
-		BetAction bet = new BetAction(this, activePlayer, betType, 2);
-		return bet;
-	}
-	
-	private BetActionType getActionTypeFromInput(){
 		Scanner scanner = new Scanner(System.in);
 		System.out.println(activePlayer.getName()+"(m/r/f)");
 		String response = scanner.nextLine().trim();
+		
+		int amount  = 0;
 		BetActionType betType = null;
 		if(response.equals("m")){
 			betType = BetActionType.MATCH;
 		}
 		else if(response.equals("r")){
 			betType = BetActionType.RAISE;
+			System.out.println(activePlayer.getName()+" Amount:");
+			amount = scanner.nextInt();
 		}
 		else if(response.equals("f")){
 			betType = BetActionType.FOLD;
 		}
 		else{
-			getActionTypeFromInput();
+			getAction();
 		}
-		return betType;
+		return new BetAction(this, activePlayer, betType, amount);
 	}
 	
 	private void checkIfComplete() {
@@ -164,18 +161,20 @@ public class BettingRound extends Round<BetAction> {
 	private void putPlayerAllIn(HandPlayer player){
 		player.setHandStatus(HandStatus.ALL_IN);
 		//Sorts All In Players Lowest Committed to Highest (for correct side pots)
-		for(int i = 0; i <= allInPlayers.size();i++){
-			HandPlayer allInPlayer = allInPlayers.get(i);
-			if(allInPlayer==null){
-				allInPlayers.add(player);
-				return;
-			}
-			else if(allInPlayer.getAmountCommittedToRound()>player.getAmountCommittedToRound()){
-				allInPlayers.add(i,player);
-				return;
+		boolean committedMore;
+		boolean found = false;
+		for(HandPlayer allInPlayer: allInPlayers){
+			committedMore =  allInPlayer.getAmountCommittedToRound()>player.getAmountCommittedToRound();
+			if(committedMore){
+				int index = allInPlayers.indexOf(allInPlayer);
+				allInPlayers.add(index,player);
+				found = true;
+				break;
 			}
 		}
-		
+		if(!found){
+			allInPlayers.add(player);
+		}
 	}
 
 	private boolean allPlayersHaveActed(){
