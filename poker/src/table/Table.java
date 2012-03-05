@@ -107,6 +107,9 @@ public class Table {
 	public List<TablePlayer> getReadyTablePlayers(){
 		List<TablePlayer> playersInHand = new ArrayList<TablePlayer>();
 		for(TablePlayer tablePlayer: getTablePlayers()){
+			if(tablePlayer.getTableBankroll()==0){
+				tablePlayer.setTableStatus(TableStatus.SITTING_OUT);
+			}
 			if(tablePlayer.getTableStatus() == TableStatus.PLAYING){
 				playersInHand.add(tablePlayer);
 			}

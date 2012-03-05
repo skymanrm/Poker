@@ -82,6 +82,7 @@ public class Hand {
 	private void endHand() {
 		//TODO test all ins
 		for(Pot p: formPots()){
+			System.out.println("Pot Total Value: "+p.getTotalValue());
 			List<HandPlayer> winners = findWinningPlayers(p.getEligiblePlayers());
 			//TODO don't just disregard remainders
 			int divisor = winners.size();

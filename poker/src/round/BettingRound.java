@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import player.HandPlayer;
+import table.Hand;
 import table.HandStatus;
 import table.Pot;
 import action.BetAction;
@@ -20,8 +21,8 @@ public class BettingRound extends Round<BetAction> {
 	
 	//TODO manually keep track of # players instead of counting every time
 	
-	public BettingRound(int startingPosition, List<HandPlayer> handPlayers, Pot pot, boolean blinds) {
-		super(startingPosition, handPlayers);
+	public BettingRound(Hand hand, int startingPosition, List<HandPlayer> handPlayers, Pot pot, boolean blinds) {
+		super(hand,startingPosition, handPlayers);
 		totalToCall = 0;
 		standingRaise = 0;
 		this.allInPlayers = new ArrayList<HandPlayer>();
@@ -98,7 +99,7 @@ public class BettingRound extends Round<BetAction> {
 		int counter = findHowManyPlayersPlaying();
 		if(counter==1){
 			setComplete(true);
-			getHand().setEndConditionMet(true);
+			hand.setEndConditionMet(true);
 			finishRound();
 		}
 		else if(complete){
@@ -109,7 +110,7 @@ public class BettingRound extends Round<BetAction> {
 	private int findHowManyPlayersPlaying(){
 		int counter = 0;
 		for(HandPlayer player: handPlayers){
-			if(player.getHandStatus() == HandStatus.PLAYING){
+			if(player.getHandStatus() == HandStatus.PLAYING || player.getHandStatus() == HandStatus.ALL_IN){
 				counter++;
 			}
 		}
@@ -158,6 +159,7 @@ public class BettingRound extends Round<BetAction> {
 	private boolean playerIsAllIn(HandPlayer player, int amount){
 		return amount>=player.getTableBankroll();
 	}
+	
 	private void putPlayerAllIn(HandPlayer player){
 		player.setHandStatus(HandStatus.ALL_IN);
 		//Sorts All In Players Lowest Committed to Highest (for correct side pots)
@@ -187,9 +189,7 @@ public class BettingRound extends Round<BetAction> {
 	}
 	
 	private void finishRound(){
-		for(HandPlayer player: allInPlayers){
-			pot.addSidePot(player, handPlayers);
-		}
+		pot.addSidePots(allInPlayers, handPlayers);
 		for(HandPlayer player: handPlayers){
 			player.resetForNewRound();
 		}
@@ -238,11 +238,11 @@ public class BettingRound extends Round<BetAction> {
 	}
 	
 	private int getBigLimit(){
-		return getHandPlayers().get(0).getTablePlayer().getTable().getBigLimit();
+		return hand.getTable().getBigLimit();
 	}
 	
 	private int getSmallLimit(){
-		return getHandPlayers().get(0).getTablePlayer().getTable().getSmallLimit();
+		return hand.getTable().getSmallLimit();
 	}
 	
 	@Override

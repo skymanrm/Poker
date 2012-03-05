@@ -26,6 +26,10 @@ public class Pot {
 		this.totalValue = totalValue;
 	}
 	
+	public void addSidePots(List<HandPlayer> allInPlayers, List<HandPlayer> handPlayers){
+		
+	}
+	@Deprecated
 	public void addSidePot(HandPlayer player, List<HandPlayer> players){
 		int amountCanWin = totalValue;
 		int allInAmount = player.getAmountCommittedToRound();

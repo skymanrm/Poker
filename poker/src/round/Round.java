@@ -13,9 +13,10 @@ public abstract class Round<T> {
 	protected boolean complete;
 	protected final List<HandPlayer> handPlayers;
 	protected HandPlayer activePlayer;
+	protected final Hand hand;
 	
-	public Round(int startingPosition, List<HandPlayer> handPlayers) {
-		
+	public Round(Hand hand,int startingPosition, List<HandPlayer> handPlayers) {
+		this.hand = hand;
 		this.actions = new ArrayList<T>();
 		this.complete = false;
 		this.handPlayers = handPlayers;
@@ -30,15 +31,17 @@ public abstract class Round<T> {
 	
 	public void setNextPlayer(){
 		int count = 0;
-		while(count<10){
+		while(count<handPlayers.size()){
 			currentPosition++;
 			currentPosition%=handPlayers.size();
 			HandPlayer player = handPlayers.get(currentPosition);
 			if(player.getHandStatus()==HandStatus.PLAYING){
 				this.setActivePlayer(player);
-				break;
+				return;
 			}
+			count++;
 		}
+		complete = true;
 	}
 	
 	public String toString(){
@@ -75,10 +78,6 @@ public abstract class Round<T> {
 	
 	public List<HandPlayer> getHandPlayers() {
 		return handPlayers;
-	}
-	
-	public Hand getHand(){
-		return getHandPlayers().get(0).getHand();
 	}
 	
 	public HandPlayer getActivePlayer() {
