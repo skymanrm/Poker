@@ -23,7 +23,7 @@ public class Straight extends HandRanking {
 
 	@Override
 	public String getFormattedName(List<Card> playingCards) {
-		Rank rank = cards.get(0).getRank();
+		Rank rank = playingCards.get(0).getRank();
 		return rank.singularName+" High Straight";
 	}
 

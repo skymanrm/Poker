@@ -34,20 +34,19 @@ public class BettingRound extends Round<BetAction> {
 
 	private void putInBlinds() {
 		List<HandPlayer> handPlayers = getHandPlayers();
+		
 		int small = getSmallLimit();
 		int big = getBigLimit();
 		if(handPlayers.size() == 2){
 			handPlayers.get(0).addToPot(small);
 			handPlayers.get(1).addToPot(big);
-			totalToCall+=big;
-			standingRaise = big;
 		}
 		else{
 			handPlayers.get(1).addToPot(small);
 			handPlayers.get(2).addToPot(big);
-			totalToCall+=big;
-			standingRaise = big;
 		}
+		totalToCall+=big;
+		standingRaise = big;
 	}
 
 	@Override
@@ -92,29 +91,6 @@ public class BettingRound extends Round<BetAction> {
 			getAction();
 		}
 		return new BetAction(this, activePlayer, betType, amount);
-	}
-	
-	private void checkIfComplete() {
-		this.setComplete(this.allPlayersHaveActed());
-		int counter = findHowManyPlayersPlaying();
-		if(counter==1){
-			setComplete(true);
-			hand.setEndConditionMet(true);
-			finishRound();
-		}
-		else if(complete){
-			finishRound();
-		}
-	}
-
-	private int findHowManyPlayersPlaying(){
-		int counter = 0;
-		for(HandPlayer player: handPlayers){
-			if(player.getHandStatus() == HandStatus.PLAYING || player.getHandStatus() == HandStatus.ALL_IN){
-				counter++;
-			}
-		}
-		return counter;
 	}
 	
 	private void evaluateFold(HandPlayer player){
@@ -178,17 +154,9 @@ public class BettingRound extends Round<BetAction> {
 			allInPlayers.add(player);
 		}
 	}
-
-	private boolean allPlayersHaveActed(){
-		for(HandPlayer player : getHandPlayers()){
-			if(!player.hasActed()){
-				return false;
-			}
-		}
-		return true;
-	}
 	
-	private void finishRound(){
+	@Override
+	protected void finishRound(){
 		pot.addSidePots(allInPlayers, handPlayers);
 		for(HandPlayer player: handPlayers){
 			player.resetForNewRound();

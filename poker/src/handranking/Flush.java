@@ -26,8 +26,8 @@ public class Flush extends HandRanking {
 	}
 
 	@Override
-	public String getFormattedName(List<Card> cards) {
-		Rank rank = cards.get(0).getRank();
+	public String getFormattedName(List<Card> playingCards) {
+		Rank rank = playingCards.get(0).getRank();
 		return rank.singularName+" High Flush";
 	}
 

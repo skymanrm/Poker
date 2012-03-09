@@ -22,7 +22,6 @@ public class Hand {
 	private final Stack<Card> cards;
 	private final List<Card> communityCards;
 	private final GameType gameType;
-	private final int buttonSeat;
 	private boolean endConditionMet;
 	private int roundIndex;
 	private HandPlayer lastRaiser;
@@ -41,7 +40,6 @@ public class Hand {
 		this.gameType = gameType;
 		this.setEndConditionMet(false);
 		this.roundIndex = 0;
-		this.buttonSeat = table.getButtonSeat();
 		this.setLastRaiser(null);
 		this.pot = new Pot(playersInHand);
 		
@@ -62,7 +60,6 @@ public class Hand {
 				break;
 			}
 			DealingRound dealingRound = (DealingRound) round;
-			System.out.println("\nRound Index: "+roundIndex+"\n");
 			System.out.println(toString());
 			while(!dealingRound.isComplete()){
 				HandPlayer player = dealingRound.getActivePlayer();
@@ -183,10 +180,6 @@ public class Hand {
 
 	public List<Card> getCommunityCards() {
 		return communityCards;
-	}
-
-	public int getButtonSeat() {
-		return buttonSeat;
 	}
 
 	public Table getTable() {

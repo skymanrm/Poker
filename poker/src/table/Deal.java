@@ -24,17 +24,18 @@ public class Deal {
 	public static void doTableStuff(){
 		Player player1 = new Player("Logan", 100);
 		Player player2 = new Player("Morgan", 100);
-		Player player3 = new Player("Colbert", 100);
+		//Player player3 = new Player("Colbert", 100);
 		
 		Table table = new Table(3, GameType.HOLDEM, 1, 2);
-		table.addPlayer(player1, 100, 0, TableStatus.PLAYING);
+		table.addPlayer(player1, 50, 0, TableStatus.PLAYING);
 		table.addPlayer(player2, 100, 1, TableStatus.PLAYING);
-		table.addPlayer(player3, 100, 2, TableStatus.PLAYING);
-		while(true){
+		//table.addPlayer(player3, 100, 2, TableStatus.PLAYING);
+		Hand hand;
+		do{
 			for(TablePlayer player: table.getTablePlayers()){
 				System.out.println(player.getTableBankroll());
 			}
-			table.newHand();
-		}
+			hand = table.newHand();
+		}while(hand!=null);
 	}
 }

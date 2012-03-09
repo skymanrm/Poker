@@ -3,7 +3,7 @@ package player;
 import table.Table;
 import table.TableStatus;
 
-public class TablePlayer{
+public class TablePlayer implements Comparable<TablePlayer>{
 	
 	private final Table table;
 	private final Player player;
@@ -77,5 +77,16 @@ public class TablePlayer{
 	
 	public String getName(){
 		return player.getName();
+	}
+
+	@Override
+	public int compareTo(TablePlayer o) {
+		if(absoluteSeat < o.absoluteSeat){
+			return -1;
+		}
+		else if(absoluteSeat > o.absoluteSeat){
+			return 1;
+		}
+		return 0;
 	}
 }

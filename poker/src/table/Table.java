@@ -1,6 +1,7 @@
 package table;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -15,54 +16,44 @@ public class Table {
 	private GameType currentGameType;
 	private int smallLimit;
 	private int bigLimit;
-	private boolean[] seats;
+	private List<Boolean> seatHasPlayer;
 	
 	public Table(int maxSeats, GameType gameType, int smallLimit, int bigLimit){
 		tablePlayers = new ArrayList<TablePlayer>();
-		buttonSeat = maxSeats-1;
 		this.setMaxSeats(maxSeats);
 		this.setCurrentGameType(gameType);
 		this.setSmallLimit(smallLimit);
 		this.setBigLimit(bigLimit);
-		initSeats();
+		this.buttonSeat = -1;
+		this.seatHasPlayer = new ArrayList<Boolean>();
+		for(int i = 0; i<maxSeats;i++){
+			seatHasPlayer.add(false);
+		}
 	}
 	
 	public Hand newHand(){
 		List<TablePlayer> readyPlayers = this.getReadyTablePlayers();
 		if(readyPlayers.size() < 2){
-			throw new IllegalArgumentException("At least two players must be ready to start a hand");
+			System.out.println("Table Breaking, Not Enough Players");
+			return null;
 		}
-		this.moveButton(readyPlayers);
-		return new Hand(currentGameType, this, tablePlayers);
-	}
-	
-	private void initSeats(){
-		seats = new boolean[maxSeats];
-		for(int i = 0; i<maxSeats;i++)
-			seats[i] = false;
-	}
-	
-	public int getButtonSeat() {
-		return buttonSeat;
+		moveButton(readyPlayers);
+		return new Hand(currentGameType, this, readyPlayers);
 	}
 
-	//Can't be called when only 1 person is playing or it will infinitely loop
 	public void moveButton(List<TablePlayer> readyPlayers){
-		int currentSeat = (buttonSeat+1) % maxSeats;
-		while(true){
-			for(TablePlayer player : readyPlayers){
-				if(player.getAbsoluteSeat() == currentSeat){
-					this.buttonSeat = currentSeat;
+		if(buttonSeat == -1){
+			buttonSeat = readyPlayers.get(0).getAbsoluteSeat();
+			return;
+		}
+		else{
+			while(true){
+				buttonSeat = (buttonSeat +1)%maxSeats;
+				if(seatHasPlayer.get(buttonSeat)){
 					return;
 				}
 			}
-			currentSeat++;
-			currentSeat %= maxSeats;
 		}
-	}
-	
-	public void setButtonSeat(int buttonSeat) {
-		this.buttonSeat = buttonSeat;
 	}
 
 	public int getMaxSeats() {
@@ -110,7 +101,7 @@ public class Table {
 			if(tablePlayer.getTableBankroll()==0){
 				tablePlayer.setTableStatus(TableStatus.SITTING_OUT);
 			}
-			if(tablePlayer.getTableStatus() == TableStatus.PLAYING){
+			else if(tablePlayer.getTableStatus() == TableStatus.PLAYING){
 				playersInHand.add(tablePlayer);
 			}
 		}
@@ -118,36 +109,20 @@ public class Table {
 	} 
 	
 	public void addPlayer(Player player, int tableBankroll, int absoluteSeat, TableStatus tableStatus){
-		if(tablePlayers.size() == maxSeats){
-			throw new IllegalArgumentException("Adding player when table is full");
+		if(!seatHasPlayer.get(absoluteSeat)){
+			TablePlayer playerToAdd = new TablePlayer(player,this,tableBankroll,absoluteSeat,tableStatus);
+			tablePlayers.add(playerToAdd);
+			Collections.sort(tablePlayers);
+			seatHasPlayer.set(absoluteSeat, true);
 		}
-		//TODO redundant
-		if(absoluteSeat < 0 || absoluteSeat >= maxSeats || seats[absoluteSeat]){
-			throw new IllegalArgumentException("Adding player to invalid seat number");
+		else{
+			throw new IllegalArgumentException("Seat is occupied or invalid");
 		}
-		TablePlayer playerToAdd = new TablePlayer(player,this,tableBankroll,absoluteSeat,tableStatus);
-		addPlayerToList(playerToAdd);
-		seats[absoluteSeat] = true;
 	}
-	private void addPlayerToList(TablePlayer player){
-		int counter = 0;
-		System.out.println(player.getName()+" is getting added");
-		for(TablePlayer tablePlayer: tablePlayers){
-			if(tablePlayer.getAbsoluteSeat()>player.getAbsoluteSeat()){
-				System.out.println(tablePlayer.getName()+" seat is greater");
-				tablePlayers.add(counter, player);
-				return;
-			}
-			counter++;
-		}
-		tablePlayers.add(player);
-	}
+
 	public void removePlayer(TablePlayer player){
-		if(!tablePlayers.contains(player)){
-			throw new IllegalArgumentException("Removing player that is not at table");
-		}
 		tablePlayers.remove(player);
-		seats[player.getAbsoluteSeat()] = false;
+		seatHasPlayer.set(player.getAbsoluteSeat(), false);
 		cashOut(player);
 	}
 	
@@ -160,11 +135,18 @@ public class Table {
 	public String toString(){
 		String returnString = this.currentGameType.toString();
 		returnString+="\nMax Seats: "+this.maxSeats;
-		returnString+="\nButton Seat: "+this.buttonSeat;
 		returnString+="\nLimits: "+this.smallLimit+"/"+this.bigLimit;
 		for(TablePlayer player: this.getTablePlayers()){
 			returnString+="\n"+player.toString();
 		}
 		return returnString;
+	}
+	
+	public int getButtonSeat() {
+		return buttonSeat;
+	}
+
+	public void setButtonSeat(int buttonSeat) {
+		this.buttonSeat = buttonSeat;
 	}
 }
