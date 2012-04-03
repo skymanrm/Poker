@@ -1,5 +1,5 @@
 package card;
-
+//Needs to have a static method that returns a sorted list of ranks for high and low
 public enum Rank{ 
 	
 	ACE(12,"Ace", "Aces","A"),
@@ -16,15 +16,31 @@ public enum Rank{
     THREE(1,"Three", "Threes","3"), 
     TWO(0,"Two", "Twos","2");
 	
-	public final int rankIndex;
-	public final String singularName;
-	public final String pluralName;
-	public final String shortName;
-	
+	private final int rankIndex;
+	private final String singularName;
+	private final String pluralName;
+	private final String shortName;
+
 	Rank(int rankIndex, String singularName, String pluralName, String shortName){
 		this.rankIndex = rankIndex;
 		this.singularName = singularName;
 		this.pluralName = pluralName;
 		this.shortName = shortName;
+	}
+	
+	public int getRankIndex() {
+		return rankIndex;
+	}
+
+	public String getSingularName() {
+		return singularName;
+	}
+
+	public String getPluralName() {
+		return pluralName;
+	}
+
+	public String getShortName() {
+		return shortName;
 	}
 }

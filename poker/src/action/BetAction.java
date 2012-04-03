@@ -1,31 +1,22 @@
 package action;
 
-import player.HandPlayer;
-import round.Round;
-
 public class BetAction extends Action {
 
-	private final int amount;
-	private final BetActionType betActionType;
+	private final BetType betType;
+	private final long amount;
 	
-	public BetAction(Round<BetAction> round, HandPlayer handPlayer, BetActionType betActionType, int amount) {
-		super(round, handPlayer);
-		this.betActionType = betActionType;
+	public BetAction(long time, BetType betType, long amount) {
+		super(time);
+		this.betType = betType;
 		this.amount = amount;
 	}
 
-	public int getAmount() {
+	public BetType getBetType() {
+		return betType;
+	}
+
+	public long getAmount() {
 		return amount;
 	}
 
-	public BetActionType getBetActionType() {
-		return betActionType;
-	}
-
-	public String toString(){
-		String s = "BetAction: ";
-		s+="\tAmount: "+amount;
-		s+="\tType: "+betActionType.toString();
-		return s;
-	}
 }

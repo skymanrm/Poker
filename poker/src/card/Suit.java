@@ -1,14 +1,24 @@
 package card;
 
 public enum Suit { 
-	CLUBS("C"), 
-	DIAMONDS("D"), 
-	HEARTS("H"), 
-	SPADES("S"); 
+	CLUBS("Clubs","C"), 
+	DIAMONDS("Diamonds","D"), 
+	HEARTS("Hearts","H"), 
+	SPADES("Spades","S"); 
 	
-	public final String shortName;
+	private final String pluralName;
+	private final String shortName;
 	
-	Suit(String shortName){
+	private Suit(String pluralName, String shortName){
+		this.pluralName = pluralName;
 		this.shortName = shortName;
+	}
+
+	public String getPluralName() {
+		return pluralName;
+	}
+
+	public String getShortName() {
+		return shortName;
 	}
 }
