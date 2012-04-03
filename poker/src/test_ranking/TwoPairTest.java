@@ -1,4 +1,4 @@
-package test;
+package test_ranking;
 
 import static org.junit.Assert.*;
 
@@ -11,19 +11,19 @@ import card.Card;
 import card.HandRanking;
 import card.PlayerHand;
 
-public class HighCardTest {
+public class TwoPairTest {
 
 	@Test
-	public void testHighCard() {
+	public void testTwoPair() {
 		PlayerHand ph = new PlayerHand();
 		List<Card> cards = new ArrayList<Card>();
 		cards.add(Card.ACE_SPADES);
-		cards.add(Card.KING_CLUBS);
-		cards.add(Card.JACK_CLUBS);
+		cards.add(Card.ACE_DIAMONDS);
+		cards.add(Card.SEVEN_CLUBS);
 		cards.add(Card.TEN_HEARTS);
-		cards.add(Card.NINE_DIAMONDS);
+		cards.add(Card.TEN_SPADES);
 		ph.getBestHand(cards, new ArrayList<Card>());
-		assertEquals("Result",HandRanking.HIGH_CARD,ph.getHandRanking());
+		assertEquals("Result",HandRanking.TWO_PAIR,ph.getHandRanking());
 	}
 
 }

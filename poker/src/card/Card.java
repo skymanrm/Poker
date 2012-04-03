@@ -88,7 +88,7 @@ public enum Card{
 		return rank.getSingularName()+" of "+suit.getPluralName();
 	}
 	
-	private static class HighComparator implements Comparator<Card>{
+	private static final class HighComparator implements Comparator<Card>{
 
 		@Override
 		public int compare(Card arg0, Card arg1) {
@@ -97,7 +97,7 @@ public enum Card{
 		
 	}
 	
-	private static class LowComparator implements Comparator<Card>{
+	private static final class LowComparator implements Comparator<Card>{
 		
 		@Override
 		public int compare(Card arg0, Card arg1) {

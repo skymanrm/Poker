@@ -9,14 +9,15 @@ public class PlayerHand {
 	private String formattedName;
 	private List<Card> bestFiveCards;
 	
+	//TODO need to add support for low and ace-low hands
 	public void getBestHand(List<Card> holeCards, List<Card> communityCards){
 		//Defensive Copies
 		List<Card> cards = new ArrayList<Card>(holeCards);
 		cards.addAll(new ArrayList<Card>(communityCards));
 		
 		Collections.sort(cards, Card.highComparator);
-		
-		for(HandRanking handRanking: HandRanking.getHandRankings()){
+		HandRanking[] handrankings = HandRanking.getHighOrderedHandRankings();
+		for(HandRanking handRanking: handrankings){
 			bestFiveCards = handRanking.getBestFiveCards(cards);
 			if(!bestFiveCards.isEmpty()){
 				formattedName = handRanking.getFormattedName(bestFiveCards);

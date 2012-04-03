@@ -1,22 +1,24 @@
 package hand;
 
+import java.util.Comparator;
+
 public class Seat {
 	
-	private final short index;
+	private final int index;
 	private boolean occupied;
 	private Player player;
 	
-	public static Seat emptySeat(short index){
+	public static Seat emptySeat(int index){
 		return new Seat(index);
 	}
 	
-	public Seat(short index){
+	public Seat(int index){
 		this.index = index;
 		occupied = false;
 		player = null;
 	}
 
-	public short getIndex() {
+	public int getIndex() {
 		return index;
 	}
 
@@ -36,5 +38,23 @@ public class Seat {
 	public void removePlayer(){
 		player = null;
 		occupied = false;
+	}
+	
+	public static Comparator<Seat> positionComparator(final int buttonPosition, final int maxSeats){
+		class PositionComparator implements Comparator<Seat>{
+			@Override
+			public int compare(Seat arg0, Seat arg1) {
+				int index1 = arg0.getIndex() - buttonPosition;
+				int index2 = arg1.getIndex() - buttonPosition;
+				if(index1 < 0){
+					index1 = maxSeats - index1;
+				}
+				if(index2 < 0){
+					index2 = maxSeats - index2;
+				}
+				return index1-index2;
+			}
+		}
+		return new PositionComparator();
 	}
 }

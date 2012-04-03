@@ -1,4 +1,4 @@
-package test;
+package test_ranking;
 
 import static org.junit.Assert.*;
 

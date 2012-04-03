@@ -1,4 +1,5 @@
-package test;
+package test_ranking;
+
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -14,6 +15,6 @@ import org.junit.runners.Suite.SuiteClasses;
 	TwoPairTest.class,
 	PairTest.class,
 	HighCardTest.class})
-public class AllTests {
+public class AllHandRankingTests {
 
 }
