@@ -6,6 +6,6 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 
-@SuiteClasses({TableTest.class})
+@SuiteClasses({TableTest.class,HandTest.class})
 
 public class AllTableTests {}

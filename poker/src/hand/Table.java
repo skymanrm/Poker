@@ -1,7 +1,6 @@
 package hand;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class Table {
@@ -17,11 +16,14 @@ public class Table {
 		}
 	}
 	
-	public void newHand(){
+	public Hand newHand(){
 		buttonSeat = getNextButtonSeat();
 		if(buttonSeat != null){
-			new Hand(getOccupiedSeats());
+			List<Player> players = getOccupiedSeats();
+			if(players.size()>1)
+				return new Hand(players);
 		}
+		return null;
 	}
 	
 	public void addPlayer(Player player, int index){
@@ -52,15 +54,14 @@ public class Table {
 	}
 	
 	private List<Player> getOccupiedSeats(){
-		List<Seat> occupiedSeats = new ArrayList<Seat>(seats);
-		for(Seat seat: seats){
-			if(seat.isOccupied())
-				occupiedSeats.add(seat);
-		}
-		Collections.sort(occupiedSeats, Seat.positionComparator(buttonSeat.getIndex(), maxSeats));
 		List<Player> players = new ArrayList<Player>();
-		for(Seat seat: occupiedSeats)
-			players.add(seat.getPlayer());
+		int index = buttonSeat.getIndex();
+		for(int i =0 ; i<maxSeats; i++){
+			Seat seat = seats.get(index);
+			if(seat.isOccupied())
+				players.add(seat.getPlayer());
+			index = (index + 1) % maxSeats;
+		}
 		return players;
 	}
 	
