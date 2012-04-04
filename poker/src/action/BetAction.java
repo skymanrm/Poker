@@ -1,12 +1,17 @@
 package action;
 
-public class BetAction extends Action {
+import hand.Player;
+
+public class BetAction implements Action {
 
 	private final BetType betType;
 	private final long amount;
+	private final Player player;
+	private final long time;
 	
-	public BetAction(long time, BetType betType, long amount) {
-		super(time);
+	public BetAction(Player player, long time, BetType betType, long amount) {
+		this.player = player;
+		this.time = time;
 		this.betType = betType;
 		this.amount = amount;
 	}
@@ -17,6 +22,16 @@ public class BetAction extends Action {
 
 	public long getAmount() {
 		return amount;
+	}
+
+	@Override
+	public Player getPlayer() {
+		return player;
+	}
+
+	@Override
+	public long getTime() {
+		return time;
 	}
 
 }

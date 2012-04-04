@@ -1,14 +1,9 @@
 package action;
 
-public abstract class Action {
+import hand.Player;
+
+public interface Action {
 	
-	private final long time;
-	
-	public Action(long time){
-		this.time = time;
-	}
-	
-	public long getTime(){
-		return time;
-	}
+	public Player getPlayer();
+	public long getTime();
 }

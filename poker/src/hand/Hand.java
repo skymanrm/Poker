@@ -2,6 +2,10 @@ package hand;
 
 import java.util.List;
 
+import action.Action;
+import action.BetAction;
+import action.BetType;
+
 public class Hand {
 	private final List<Player> players;
 	private Player activePlayer;
@@ -10,6 +14,7 @@ public class Hand {
 		this.players = players;
 	}
 	
+	@SuppressWarnings("unused")
 	public Player getNextPlayer(){
 		int index = (activePlayer == null) ? -1 : players.indexOf(activePlayer);
 		int size = players.size();
@@ -23,6 +28,22 @@ public class Hand {
 		return null;
 	}
 	
+	public void evaluateAction(Action action){
+		if(action instanceof BetAction){
+			evaluateBet((BetAction) action);
+		}
+	}
+	
+	private void evaluateBet(BetAction betAction){
+		if(betAction.getBetType()==BetType.Fold){
+			foldPlayer(betAction.getPlayer());
+		}
+	}
+	
+	private void foldPlayer(Player player) {
+		
+	}
+
 	public List<Player> getPlayers() {
 		return players;
 	}
