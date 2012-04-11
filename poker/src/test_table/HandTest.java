@@ -1,12 +1,13 @@
 package test_table;
 
-import static org.junit.Assert.assertEquals;
-import hand.Hand;
-import hand.Player;
-import hand.Round;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import hand.Hand;
+import hand.Player;
+import hand.Round;
 
 import org.junit.Test;
 
@@ -19,7 +20,7 @@ public class HandTest {
 	private Player p2 = new Player("LordScam",100);
 	private Player p3 = new Player("Wiz",100);
 	
-	private Hand getPlayersInHand(){
+	private Hand getTestHand(){
 		List<Player> players = new ArrayList<Player>();
 		players.add(p1);
 		players.add(p2);
@@ -28,56 +29,36 @@ public class HandTest {
 	}
 	
 	@Test
-	public void testNextPlayer() {
-		Hand hand = getPlayersInHand();
+	public void testRoundToRoundFidelity() {
+		
+		Hand hand = getTestHand();
 		Round round = hand.getActiveRound();
-		assertEquals("Results",p1,round.getActivePlayer());
-		assertEquals("Results",p2,round.getNextPlayer());
-		assertEquals("Results",p3,round.getNextPlayer());
-		assertEquals("Results",p1,round.getNextPlayer());
+		round.getNextPlayer();
+		BetAction betAction = new BetAction(p1, System.currentTimeMillis(), BetType.BET, 10);
+		round.evaluateAction(betAction);
+		BetAction betAction2 = new BetAction(p2, System.currentTimeMillis(),BetType.CALL,10);
+		round.evaluateAction(betAction2);
+		BetAction betAction3 = new BetAction(p3, System.currentTimeMillis(),BetType.FOLD,0);
+		round.evaluateAction(betAction3);
+		boolean nextPlayerIsNull = (round.getNextPlayer()==null);
+		assertEquals("Results",nextPlayerIsNull,true);
+		assertEquals("Results",round.getHand().getPotValue(),20);
+		assertEquals("Results",p1.getBankroll(),90);
+		assertEquals("Results",p2.getBankroll(),90);
+		assertEquals("Results",p3.getBankroll(),100);
+		assertEquals("Results",hand.getPlayers().contains(p3),false);
+		
+		hand.startNextRound();
+		Round round2 = hand.getActiveRound();
+		round2.getNextPlayer();
+		assertEquals("Results",round2.isKillable(),false);
+		BetAction betAction4 = new BetAction(p1, System.currentTimeMillis(), BetType.BET, 10);
+		round2.evaluateAction(betAction4);
+		BetAction betAction5 = new BetAction(p2, System.currentTimeMillis(),BetType.FOLD,10);
+		round2.evaluateAction(betAction5);
+		boolean nextPlayerIsNull2 = (round2.getNextPlayer()==null);
+		assertEquals("Results",nextPlayerIsNull2,true);
+		assertEquals("Results",round2.isKillable(),true);
 	}
 
-	@Test
-	public void testFoldingPlayer(){
-		Hand hand = getPlayersInHand();
-		Round round = hand.getActiveRound();
-		BetAction betAction = new BetAction(p1, System.currentTimeMillis(), BetType.FOLD, 0);
-		round.evaluateAction(betAction);
-		assertEquals("Results",Boolean.FALSE, round.getPlayers().contains(p1));
-	}
-	
-	@Test(expected=IllegalArgumentException.class)
-	public void testWrongPersonBetting(){
-		Hand hand = getPlayersInHand();
-		Round round = hand.getActiveRound();
-		BetAction betAction = new BetAction(p2, System.currentTimeMillis(), BetType.FOLD, 0);
-		round.evaluateAction(betAction);
-	}
-	
-	@Test
-	public void testAmountToCall(){
-		Hand hand = getPlayersInHand();
-		Round round = hand.getActiveRound();
-		BetAction betAction = new BetAction(p1, System.currentTimeMillis(), BetType.BET, 10);
-		round.evaluateAction(betAction);
-		assertEquals("Results",10,round.getAmountToCall());
-		BetAction betAction2 = new BetAction(p2, System.currentTimeMillis(),BetType.RAISE,10);
-		round.evaluateAction(betAction2);
-		assertEquals("Results",20,round.getAmountToCall());
-	}
-	
-	@Test
-	public void testResettingTurnAfterBets(){
-		Hand hand = getPlayersInHand();
-		Round round = hand.getActiveRound();
-		BetAction betAction = new BetAction(p1, System.currentTimeMillis(), BetType.BET, 10);
-		round.evaluateAction(betAction);
-		BetAction betAction2 = new BetAction(p2, System.currentTimeMillis(),BetType.RAISE,10);
-		round.evaluateAction(betAction2);
-		BetAction betAction3 = new BetAction(p3, System.currentTimeMillis(),BetType.CALL,20);
-		round.evaluateAction(betAction3);
-		assertEquals("Results",p1.hasActed(),false);
-		assertEquals("Results",p2.hasActed(),true);
-		assertEquals("Results",p3.hasActed(),true);
-	}
 }

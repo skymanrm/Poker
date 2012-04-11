@@ -1,29 +1,42 @@
 package hand;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import action.Action;
 import action.BetAction;
 
 public class Round {
+	
 	private final List<Player> players;
 	private Player activePlayer;
 	private long amountToCall;
 	private final Hand hand;
+	private final Map<Player,RoundState> roundStates;
+	private final Map<Player,HandState> handStates;
 	
-	public Round(Hand hand, List<Player> players){
+	public Round(Hand hand){
 		this.hand = hand;
-		this.players = players;
+		//this will mutate the hand's players (this is desired)
+		this.players = hand.getPlayers();
 		this.amountToCall = 0;
-		getNextPlayer();
+		this.handStates = hand.getHandStates();
+		roundStates = new HashMap<Player,RoundState>();
+		for(Player player: players)
+			roundStates.put(player, new RoundState());
 	}
 
 	public Player getNextPlayer(){
 		int index = (activePlayer == null) ? -1 : players.indexOf(activePlayer);
 		int size = players.size();
+		if(isKillable())
+			return null;
 		for(int i =0 ; i<size; i++){
 			index = (index + 1) % size;
 			Player player = players.get(index);
-			if(!player.isAllIn()){
+			RoundState roundState = roundStates.get(player);
+			HandState handState = handStates.get(player);
+			if(!handState.isAllIn() && !roundState.hasActed()){
 				activePlayer = player;
 				return player;
 			}
@@ -46,30 +59,42 @@ public class Round {
 		
 		switch(betAction.getBetType()){
 		case FOLD: players.remove(player); break;
-		case CALL: player.addToPot(hand,amount); break;
+		case CALL: callPlayer(player,amount); break;
 		case CHECK: break;
 		case BET: betPlayer(player,amount); break;
 		case RAISE: raisePlayer(player,amount); break;
 		}
-		player.setHasActed(true);
+		RoundState roundState = roundStates.get(player);
+		roundState.setHasActed(true);
 		getNextPlayer();
 	}
 	
-	private void resetHasActedForNonactivePlayers(){
-		for(Player player: players)
-			player.setHasActed(false);
+	private void resetHasActedForPlayers(){
+		for(RoundState roundState: roundStates.values())
+			roundState.setHasActed(false);
 	}
+	
+	private void callPlayer(Player player, long amount){
+		RoundState roundState = roundStates.get(player);
+		long total = roundState.getAmountCommittedToRound()+amount;
+		if(total>amountToCall)
+			throw new IllegalArgumentException("Can't be of BetType: Call if amount is larger than the amount to call");
+		player.addToPot(hand,roundStates.get(player),amount);
+	}
+	
 	private void raisePlayer(Player player, long amount) {
 		long total = amount+amountToCall;
-		player.addToPot(hand, total);
+		player.addToPot(hand,roundStates.get(player), total);
 		amountToCall = total;
-		resetHasActedForNonactivePlayers();
+		resetHasActedForPlayers();
 	}
 	
 	private void betPlayer(Player player, long amount) {
-		player.addToPot(hand, amount);
+		if(amountToCall!=0)
+			throw new IllegalArgumentException("Can't be of BetType : BET if there is already an amount to call");
+		player.addToPot(hand,roundStates.get(player), amount);
 		amountToCall = amount;
-		resetHasActedForNonactivePlayers();
+		resetHasActedForPlayers();
 	}
 	
 	public Player getActivePlayer(){
@@ -85,5 +110,13 @@ public class Round {
 
 	public Hand getHand() {
 		return hand;
+	}
+	
+	public boolean isKillable(){
+		return players.size()==1; 
+	}
+	
+	public RoundState getRoundStateForPlayer(Player player){
+		return roundStates.get(player);
 	}
 }

@@ -13,6 +13,8 @@ public class BetAction implements Action {
 		this.player = player;
 		this.time = time;
 		this.betType = betType;
+		if(amount<0)
+			throw new IllegalArgumentException("BetType can't have negative value");
 		this.amount = amount;
 	}
 

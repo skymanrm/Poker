@@ -116,6 +116,8 @@ public enum HandRanking {
 		this.ratio = ratio;
 	}
 	
+	public abstract String getFormattedName(List<Card> playingCards);
+	
 	public static HandRanking[] getHighOrderedHandRankings(){
 		return new HandRanking[]{
 			STRAIGHT_FLUSH,FOUR_OF_A_KIND,FULL_HOUSE,FLUSH,STRAIGHT,THREE_OF_A_KIND,TWO_PAIR,PAIR,HIGH_CARD
@@ -155,8 +157,6 @@ public enum HandRanking {
 		return cardsAtRank;
 	}
 
-	public abstract String getFormattedName(List<Card> playingCards);
-	
 	
 	private static List<Card> getSuitedCards(List<Card> cards){
 		List<Card> suitedCards = new ArrayList<Card>();
@@ -203,10 +203,7 @@ public enum HandRanking {
 		return Collections.emptyList();
 	}
 
-
 	public int getRankIndex() {
 		return rankIndex;
-	}
-	
-	
+	}	
 }
