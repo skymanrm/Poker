@@ -13,7 +13,7 @@ public class Round {
 	private long amountToCall;
 	private final Hand hand;
 	private final Map<Player,RoundState> roundStates;
-	private final Map<Player,HandState> handStates;
+	private final Map<Player,HandPlayer> handStates;
 	
 	public Round(Hand hand){
 		this.hand = hand;
@@ -35,7 +35,7 @@ public class Round {
 			index = (index + 1) % size;
 			Player player = players.get(index);
 			RoundState roundState = roundStates.get(player);
-			HandState handState = handStates.get(player);
+			HandPlayer handState = handStates.get(player);
 			if(!handState.isAllIn() && !roundState.hasActed()){
 				activePlayer = player;
 				return player;

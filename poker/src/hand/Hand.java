@@ -18,7 +18,7 @@ public class Hand {
 	private int roundIndex;
 	private final Stack<Card> deck;
 	private final List<DealtCard> communityCards;
-	private final Map<Player,HandState> handStates;
+	private final Map<Player,HandPlayer> handStates;
 	
 	public Hand(List<Player> players){
 		this.players = players;
@@ -26,9 +26,9 @@ public class Hand {
 		this.roundIndex = 0;
 		deck = Deck.getShuffledDeck();
 		communityCards = new ArrayList<DealtCard>();
-		handStates = new HashMap<Player,HandState>();
+		handStates = new HashMap<Player,HandPlayer>();
 		for(Player player: players)
-			handStates.put(player, new HandState());
+			handStates.put(player, new HandPlayer());
 		startNextRound();
 	}
 	
@@ -74,7 +74,7 @@ public class Hand {
 		return communityCards;
 	}
 
-	public Map<Player, HandState> getHandStates() {
+	public Map<Player, HandPlayer> getHandStates() {
 		return handStates;
 	}
 	
@@ -84,7 +84,7 @@ public class Hand {
 		case 0: 
 			for(int i=0;i<2;i++){
 				for(Player player: players){
-					HandState handState = handStates.get(player);
+					HandPlayer handState = handStates.get(player);
 					handState.addCard(deck.pop(), CardVisibility.PRIVATE);
 				}
 			}

@@ -7,11 +7,11 @@ import card.Card;
 import card.CardVisibility;
 import card.DealtCard;
 
-public class HandState {
+public class HandPlayer {
 	private boolean allIn;
 	private final List<DealtCard> cards;
 	
-	public HandState(){
+	public HandPlayer(){
 		this.allIn = false;
 		this.cards = new ArrayList<DealtCard>();
 	}
