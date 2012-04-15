@@ -32,6 +32,7 @@ public class HandTest {
 	public void testRoundToRoundFidelity() {
 		
 		Hand hand = getTestHand();
+		hand.startNextRound();
 		Round round = hand.getActiveRound();
 		round.getNextPlayer();
 		BetAction betAction = new BetAction(p1, System.currentTimeMillis(), BetType.BET, 10);

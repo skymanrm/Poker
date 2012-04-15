@@ -79,6 +79,7 @@ public class TableTest {
 		table.addPlayer(p3,2);
 		Hand hand = table.newHand();
 		//Round 1
+		hand.startNextRound();
 		Round round = hand.getActiveRound();
 		round.getNextPlayer();
 		BetAction betAction = new BetAction(p1, System.currentTimeMillis(), BetType.BET, 10);
@@ -111,6 +112,7 @@ public class TableTest {
 		//Pay Out Tests
 		hand.payOut();
 		hand = table.newHand();
+		hand.startNextRound();
 		round = hand.getActiveRound();
 		round.getNextPlayer();
 		assertEquals("Results",round.getActivePlayer(),p2);

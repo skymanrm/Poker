@@ -24,7 +24,8 @@ import card.PlayerHand;
 	ThreeOfAKindTest.class,
 	TwoPairTest.class,
 	PairTest.class,
-	HighCardTest.class})
+	HighCardTest.class,
+	ComparingHandsTest.class})
 public class AllHandRankingTests {
 	
 	public static List<Card> getCards(Card...cards){

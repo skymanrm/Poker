@@ -24,7 +24,9 @@ public class RoundTest {
 		players.add(p1);
 		players.add(p2);
 		players.add(p3);
-		return new Hand(players).getActiveRound();
+		Hand hand = new Hand(players);
+		hand.startNextRound();
+		return hand.getActiveRound();
 	}
 	
 	@Test

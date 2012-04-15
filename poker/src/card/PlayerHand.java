@@ -53,12 +53,12 @@ public class PlayerHand implements Comparable<PlayerHand>{
 
 	@Override
 	public int compareTo(PlayerHand arg0) {
-		int compare = handRanking.compareTo(arg0.getHandRanking());
+		int compare = HandRanking.getComparator().compare(handRanking, arg0.getHandRanking());
 		if(compare==0){
 			for(int i =0;i<5;i++){
 				Rank selfRank = bestFiveCards.get(i).getRank();
 				Rank otherRank = arg0.getBestFiveCards().get(i).getRank();
-				compare = selfRank.compareTo(otherRank);
+				compare = Rank.getComparator().compare(selfRank, otherRank);
 				if(compare!=0)
 					break;
 			}

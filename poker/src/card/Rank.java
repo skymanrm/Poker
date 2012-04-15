@@ -1,4 +1,7 @@
 package card;
+
+import java.util.Comparator;
+
 //TODO Needs to have a static method that returns a sorted list of ranks for high and low
 public enum Rank{ 
 	
@@ -42,5 +45,14 @@ public enum Rank{
 
 	public String getShortName() {
 		return shortName;
+	}
+	
+	public static Comparator<Rank> getComparator(){
+		return new Comparator<Rank>(){
+			@Override
+			public int compare(Rank arg0, Rank arg1) {
+				return arg0.rankIndex-arg1.rankIndex;
+			}
+		};
 	}
 }
