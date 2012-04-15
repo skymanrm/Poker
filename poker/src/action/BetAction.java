@@ -36,4 +36,9 @@ public class BetAction implements Action {
 		return time;
 	}
 
+	@Override
+	public String toString() {
+		return "BetAction [betType=" + betType + ", amount=" + amount
+				+ ", player=" + player.getName()+ "]";
+	}
 }

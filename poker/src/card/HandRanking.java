@@ -2,6 +2,7 @@ package card;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public enum HandRanking {
@@ -118,18 +119,6 @@ public enum HandRanking {
 	
 	public abstract String getFormattedName(List<Card> playingCards);
 	
-	public static HandRanking[] getHighOrderedHandRankings(){
-		return new HandRanking[]{
-			STRAIGHT_FLUSH,FOUR_OF_A_KIND,FULL_HOUSE,FLUSH,STRAIGHT,THREE_OF_A_KIND,TWO_PAIR,PAIR,HIGH_CARD
-		};
-	}
-	
-	public static HandRanking[] getLowOrderedHandRankings(){
-		return new HandRanking[]{
-			HIGH_CARD,PAIR,TWO_PAIR,THREE_OF_A_KIND,STRAIGHT,FLUSH,FULL_HOUSE,FOUR_OF_A_KIND,STRAIGHT_FLUSH
-		};
-	}
-	
 	public List<Card> getBestFiveCards(List<Card> cards) {
 		List<Card> unusedCards = new ArrayList<Card>(cards);
 		List<Card> usedCards = new ArrayList<Card>();
@@ -205,5 +194,14 @@ public enum HandRanking {
 
 	public int getRankIndex() {
 		return rankIndex;
-	}	
+	}
+	
+	public static Comparator<HandRanking> getComparator(){
+		return new Comparator<HandRanking>(){
+			@Override
+			public int compare(HandRanking arg0, HandRanking arg1) {
+				return arg0.rankIndex-arg1.rankIndex;
+			}
+		};
+	}
 }

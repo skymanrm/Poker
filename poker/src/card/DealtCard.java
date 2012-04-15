@@ -17,4 +17,9 @@ public class DealtCard {
 	public CardVisibility getVisibility() {
 		return visibility;
 	}
+
+	@Override
+	public String toString() {
+		return card.toString();
+	}
 }

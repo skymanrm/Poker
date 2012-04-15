@@ -10,6 +10,7 @@ import card.Card;
 import card.CardVisibility;
 import card.DealtCard;
 import card.Deck;
+import card.PlayerHand;
 
 public class Hand {
 	private final List<Player> players;
@@ -29,20 +30,39 @@ public class Hand {
 		handStates = new HashMap<Player,HandPlayer>();
 		for(Player player: players)
 			handStates.put(player, new HandPlayer());
-		startNextRound();
 	}
 	
+	private PlayerHand getPlayerHand(Player player){
+		HandPlayer handPlayer = handStates.get(player);
+		List<DealtCard> holeCards = handPlayer.getCards();
+		return PlayerHand.getPlayerHandWithDealtCards(holeCards, communityCards);
+	}
 	public void payOut(){
-		if(players.size()==1){
-			Player winner = players.get(0);
-			winner.increaseBankroll(potValue);
-			potValue = 0;
-		}
-		else{
-			List<Player> winners = new ArrayList<Player>();
-			for(Player player:players){
-				
+		List<Player> winners = new ArrayList<Player>();
+		PlayerHand winningHand = null;
+		for(Player player: players){
+			PlayerHand playerHand = getPlayerHand(player);
+			if(winners.isEmpty()){
+				winners.add(player);
+				winningHand = playerHand;
 			}
+			else{
+				int compare = playerHand.compareTo(winningHand);
+				if(compare>0){
+					winners.clear();
+					winners.add(player);
+					winningHand = playerHand;
+				}
+				else if(compare==0){
+					winners.add(player);
+				}
+			}
+		}
+		//TODO Figure out remainder
+		for(Player player: winners){
+			player.increaseBankroll(potValue/winners.size());
+			PlayerHand playerHand = getPlayerHand(player);
+			System.out.println(player.getName()+" wins with "+playerHand.getFormattedName());
 		}
 	}
 	public List<Player> getPlayers() {
@@ -79,7 +99,11 @@ public class Hand {
 	}
 	
 	public boolean startNextRound() {
-		this.activeRound = new Round(this);
+		return startNextRound(new Round(this));
+	}
+	
+	public boolean startNextRound(Round round){
+		this.activeRound = round;
 		switch(roundIndex){
 		case 0: 
 			for(int i=0;i<2;i++){

@@ -60,9 +60,7 @@ public enum Card{
 	QUEEN_CLUBS(Rank.QUEEN,Suit.CLUBS),
 	KING_CLUBS(Rank.KING,Suit.CLUBS);
 	
-	//Should be made lazy loading accessors
 	public static final Comparator<Card> highComparator = new HighComparator();
-	public static final Comparator<Card> lowComparator = new LowComparator();
 	
 	private final Rank rank;
 	private final Suit suit;
@@ -89,20 +87,9 @@ public enum Card{
 	}
 	
 	private static final class HighComparator implements Comparator<Card>{
-
 		@Override
 		public int compare(Card arg0, Card arg1) {
-			return arg0.rank.getRankIndex() - arg1.rank.getRankIndex();
+			return arg0.getRank().compareTo(arg1.getRank());
 		}
-		
-	}
-	
-	private static final class LowComparator implements Comparator<Card>{
-		
-		@Override
-		public int compare(Card arg0, Card arg1) {
-			return arg1.rank.getRankIndex() - arg0.rank.getRankIndex();
-		}
-
 	}
 }

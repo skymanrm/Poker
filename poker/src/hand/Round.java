@@ -41,6 +41,7 @@ public class Round {
 				return player;
 			}
 		}
+		activePlayer = null;
 		return null;
 	}
 	
@@ -59,11 +60,12 @@ public class Round {
 		
 		switch(betAction.getBetType()){
 		case FOLD: players.remove(player); break;
-		case CALL: callPlayer(player,amount); break;
+		case CALL: callPlayer(player); break;
 		case CHECK: break;
 		case BET: betPlayer(player,amount); break;
 		case RAISE: raisePlayer(player,amount); break;
 		}
+		//Should not get called if someone folded
 		RoundState roundState = roundStates.get(player);
 		roundState.setHasActed(true);
 		getNextPlayer();
@@ -74,12 +76,10 @@ public class Round {
 			roundState.setHasActed(false);
 	}
 	
-	private void callPlayer(Player player, long amount){
+	private void callPlayer(Player player){
 		RoundState roundState = roundStates.get(player);
-		long total = roundState.getAmountCommittedToRound()+amount;
-		if(total>amountToCall)
-			throw new IllegalArgumentException("Can't be of BetType: Call if amount is larger than the amount to call");
-		player.addToPot(hand,roundStates.get(player),amount);
+		long total = amountToCall - roundState.getAmountCommittedToRound();
+		player.addToPot(hand,roundStates.get(player),total);
 	}
 	
 	private void raisePlayer(Player player, long amount) {
